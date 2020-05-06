@@ -1,4 +1,4 @@
-package jrs.mystorage.auth.configuration;
+package jrs.mystorage.auth.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

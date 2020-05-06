@@ -1,5 +1,6 @@
-package jrs.mystorage.auth.configuration;
+package jrs.mystorage.auth.config;
 
+import jrs.mystorage.auth.service.UserAuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +14,6 @@ import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
@@ -26,8 +26,11 @@ public class AuthServerConfiguration extends AuthorizationServerConfigurerAdapte
     @Value("${security.jwt.client-secret}")
     private String clientSecret;
 
-    @Value("${security.jwt.grant-type}")
-    private String grantType;
+    @Value("${security.jwt.grant-types.password-type}")
+    private String grantTypePassword;
+
+    @Value("${security.jwt.grant-types.refresh-token-type}")
+    private String grantTypeRefreshToken;
 
     @Value("${security.jwt.scope-read}")
     private String scopeRead;
@@ -37,6 +40,12 @@ public class AuthServerConfiguration extends AuthorizationServerConfigurerAdapte
 
     @Value("${security.jwt.resource-ids}")
     private String resourceIds;
+
+    @Value("${security.jwt.access-token-validity}")
+    private Integer accessTokenValidity;
+
+    @Value("${security.jwt.refresh-token-validity}")
+    private Integer refreshTokenValidity;
 
     @Autowired
     private TokenStore tokenStore;
@@ -50,16 +59,20 @@ public class AuthServerConfiguration extends AuthorizationServerConfigurerAdapte
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private UserAuthenticationService userAuthenticationService;
+
     @Override
     public void configure(ClientDetailsServiceConfigurer configurer) throws Exception {
         configurer
                 .inMemory()
                 .withClient(clientId)
                 .secret(passwordEncoder.encode(clientSecret))
-                .authorizedGrantTypes(grantType)
+                .authorizedGrantTypes(grantTypePassword, grantTypeRefreshToken)
                 .scopes(scopeRead, scopeWrite)
                 .resourceIds(resourceIds)
-                .accessTokenValiditySeconds(4444444);
+                .accessTokenValiditySeconds(accessTokenValidity)
+                .refreshTokenValiditySeconds(refreshTokenValidity);
     }
 
     @Override
@@ -67,6 +80,7 @@ public class AuthServerConfiguration extends AuthorizationServerConfigurerAdapte
         TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
         enhancerChain.setTokenEnhancers(Collections.singletonList(accessTokenConverter));
         endpoints
+                .userDetailsService(userAuthenticationService)
                 .tokenStore(tokenStore)
                 .reuseRefreshTokens(true)
                 .accessTokenConverter(accessTokenConverter)

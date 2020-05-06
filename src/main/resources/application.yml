@@ -31,12 +31,17 @@ security:
   encoding-strength: 256
   security-realm: "My Storage server application "
   jwt:
-    client-id: fishlogclientid
-    client-secret: ZmlzaGxvZy1iYWNrZW5kLWFwcGxpY2F0aW9uDQo
-    grant-type: password
+    client-id: mystorageid
+    client-secret: 2JgZRcsAPw0daYod97KahG6bXClhqGH5
+    grant-types:
+      password-type: password
+      refresh-token-type: refresh_token
+      client-credentials-type: client_credentials
     scope-read: read
     scope-write: write
-    resource-ids: fishlogresourceids
+    resource-ids: mystorageresourceids
+    access-token-validity: 3600 #1h
+    refresh-token-validity: 43200 #12h
 
 management:
   endpoint:

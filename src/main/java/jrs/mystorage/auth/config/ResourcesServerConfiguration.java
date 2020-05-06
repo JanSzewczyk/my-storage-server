@@ -1,4 +1,4 @@
-package jrs.mystorage.auth.configuration;
+package jrs.mystorage.auth.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,14 +32,8 @@ public class ResourcesServerConfiguration extends ResourceServerConfigurerAdapte
                 .authorizeRequests()
                 .antMatchers("/actuator/**", "/api-docs/**").permitAll()
 //                .antMatchers("/signUp/**").permitAll()
-//                .antMatchers("/retrieve/**").permitAll()
-//                .antMatchers("/user/**" ).authenticated()
-//                .antMatchers("/trips/**" ).authenticated()
-//                .antMatchers("/fish/**" ).authenticated()
-//                .antMatchers("/trophy/**" ).authenticated()
-//                .antMatchers("/lake/**" ).permitAll()
-//                .antMatchers("/fishery/**" ).authenticated()
-//                .antMatchers("/statistic/**" ).authenticated()
+//                .antMatchers("/owner/**" ).authenticated()
+//                .antMatchers("/employee/**" ).authenticated()
         ;
     }
 }
