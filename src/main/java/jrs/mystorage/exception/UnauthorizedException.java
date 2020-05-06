@@ -1,4 +1,17 @@
 package jrs.mystorage.exception;
 
-public class UnauthorizedException {
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
+public class UnauthorizedException extends ResponseStatusException {
+
+    private static final HttpStatus status = HttpStatus.UNAUTHORIZED;
+
+    public UnauthorizedException() {
+        super(status);
+    }
+
+    public UnauthorizedException(String message) {
+        super(status, message);
+    }
 }

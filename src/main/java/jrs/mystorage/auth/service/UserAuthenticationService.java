@@ -26,12 +26,6 @@ public class UserAuthenticationService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-
-//        User user = userRepository.findByEmail(email).orElseThrow(NotFoundException::new);
-
-//        List<GrantedAuthority> authorities = new ArrayList<>();
-//        authorities.add(new SimpleGrantedAuthority("ADMIN"));
-
         return this.findUserByEmail(email).orElseThrow(NotFoundException::new);
     }
 
