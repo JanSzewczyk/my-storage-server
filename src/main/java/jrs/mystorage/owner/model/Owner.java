@@ -1,6 +1,5 @@
 package jrs.mystorage.owner.model;
 
-import com.sun.xml.bind.v2.TODO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
