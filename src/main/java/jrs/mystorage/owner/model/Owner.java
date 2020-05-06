@@ -1,8 +1,11 @@
 package jrs.mystorage.owner.model;
 
+import com.sun.xml.bind.v2.TODO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -33,14 +36,19 @@ public class Owner {
     @Column(nullable = false)
     private String lastName;
 
-    @Column
     @Length(max = 16)
+    @Column(length = 32, unique = true)
     private String phone;
 
-//    employee
+    // TODO employee relation
 
-//    storage
+    // TODO storage relation
 
-    @Column
+    @CreationTimestamp
+    @Column(updatable = false)
     private Timestamp createdAt;
+
+    @UpdateTimestamp
+    @Column
+    private Timestamp updatedAt;
 }
