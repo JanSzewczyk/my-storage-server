@@ -1,12 +1,13 @@
 server:
   port: 8080
+  tomcat:
+    connection-timeout: 5000
   error:
     include-stacktrace: never
 
-
 spring:
   jpa:
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQL10Dialect
@@ -21,3 +22,23 @@ spring:
     url: jdbc:postgresql://localhost:5432/my-storage
     username: jrs
     password: ""
+
+security:
+  oauth2:
+    resource:
+      filter-order: 3
+  signing-key: MaYzkSjmkzPC57L
+  encoding-strength: 256
+  security-realm: "My Storage server application "
+  jwt:
+    client-id: fishlogclientid
+    client-secret: ZmlzaGxvZy1iYWNrZW5kLWFwcGxpY2F0aW9uDQo
+    grant-type: password
+    scope-read: read
+    scope-write: write
+    resource-ids: fishlogresourceids
+
+management:
+  endpoint:
+    health:
+      show-details: always
