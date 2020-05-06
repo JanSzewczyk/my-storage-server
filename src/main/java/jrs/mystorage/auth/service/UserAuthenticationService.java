@@ -2,6 +2,7 @@ package jrs.mystorage.auth.service;
 
 import jrs.mystorage.auth.model.Role;
 import jrs.mystorage.exception.NotFoundException;
+import jrs.mystorage.exception.UnauthorizedException;
 import jrs.mystorage.owner.model.Owner;
 import jrs.mystorage.owner.repository.OwnerRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +26,7 @@ public class UserAuthenticationService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return this.findUserByEmail(email).orElseThrow(NotFoundException::new);
+        return this.findUserByEmail(email).orElseThrow(UnauthorizedException::new);
     }
 
     private Optional<User> findUserByEmail(String email) {
