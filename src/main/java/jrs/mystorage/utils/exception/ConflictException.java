@@ -1,17 +1,17 @@
-package jrs.mystorage.exception;
+package jrs.mystorage.utils.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-public class NotFoundException extends ResponseStatusException {
+public class ConflictException extends ResponseStatusException {
 
     private static final HttpStatus status = HttpStatus.NOT_FOUND;
 
-    public NotFoundException() {
+    public ConflictException() {
         super(status);
     }
 
-    public NotFoundException(String message) {
+    public ConflictException(String message) {
         super(status, message);
     }
 }
