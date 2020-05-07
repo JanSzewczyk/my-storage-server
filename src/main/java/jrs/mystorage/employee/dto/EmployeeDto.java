@@ -1,6 +1,7 @@
 package jrs.mystorage.employee.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import jrs.mystorage.utils.validator.annotation.UniqueEmailValid;
+import jrs.mystorage.utils.validator.annotation.EmailValid;
 import jrs.mystorage.utils.validator.annotation.PasswordValid;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,6 +18,8 @@ public class EmployeeDto {
 
     private UUID employeeId;
 
+    @EmailValid
+    @UniqueEmailValid
     private String email;
 
     @PasswordValid
