@@ -1,8 +1,6 @@
 package jrs.mystorage.employee.dto;
 
-import jrs.mystorage.utils.validator.annotation.UniqueEmailValid;
 import jrs.mystorage.utils.validator.annotation.EmailValid;
-import jrs.mystorage.utils.validator.annotation.PasswordValid;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
