@@ -3,5 +3,5 @@ INSERT INTO owner(owner_id, created_at, email, first_name, last_name, password, 
 VALUES ('02346256-44b2-4811-917a-6ad03c56036e', '2016-05-06 19:53:58.000000', 'jan.szewczyk1997@gmail.com', 'Jan', 'Szewczyk', '$2a$10$jXXKMhNsw/l7FFuzKsfHAOH.qv881bSrQF8L.pQ/2QprSU8jzwyxm', '+48516605828', '2019-08-06 21:54:09.000000'),
        ('3272d037-bd1f-4cc2-8991-20587bb97048', '2020-05-01 14:43:58.000000', 'mietek123@gmail.com', 'Mieczysław', 'Akumulatorski', '$2a$10$jXXKMhNsw/l7FFuzKsfHAOH.qv881bSrQF8L.pQ/2QprSU8jzwyxm', '+48531329239', '2020-05-06 21:54:09.000000');
 
-INSERT INTO employee(employee_id, address_city, address_country, address_state, address_street, address_zip, created_at, email, first_name, last_name, password, phone, updated_at)
-VALUES ()
+-- INSERT INTO employee(employee_id, address_city, address_country, address_state, address_street, address_zip, created_at, email, first_name, last_name, password, phone, updated_at)
+-- VALUES ()
