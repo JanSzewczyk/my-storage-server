@@ -1,5 +1,6 @@
 package jrs.mystorage.owner.model;
 
+import jrs.mystorage.employee.model.Employee;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -9,6 +10,8 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -39,7 +42,12 @@ public class Owner {
     @Column(length = 32, unique = true)
     private String phone;
 
-    // TODO employee relation
+    @OneToMany(
+            mappedBy = "owner",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL
+    )
+    private Set<Employee> employees = new HashSet<>();
 
     // TODO storage relation
 

@@ -1,5 +1,6 @@
 package jrs.mystorage.employee.model;
 
+import jrs.mystorage.owner.model.Owner;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -51,9 +52,6 @@ public class Employee {
     @Length(min = 3)
     private String addressZip;
 
-    @Column
-    private String addressState;
-
     @Column()
     private String addressCountry;
 
@@ -64,4 +62,14 @@ public class Employee {
     @UpdateTimestamp
     @Column
     private Timestamp updatedAt;
+
+    @ManyToOne(
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH,
+                    CascadeType.MERGE,
+                    CascadeType.PERSIST,
+                    CascadeType.REFRESH}
+    )
+    @JoinColumn(name = "owner_id")
+    private Owner owner;
 }

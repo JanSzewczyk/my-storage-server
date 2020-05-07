@@ -1,6 +1,6 @@
 package jrs.mystorage.auth.service;
 
-import jrs.mystorage.exception.UnauthorizedException;
+import jrs.mystorage.utils.exception.UnauthorizedException;
 import jrs.mystorage.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,4 +1,4 @@
-package jrs.mystorage.exception;
+package jrs.mystorage.utils.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
