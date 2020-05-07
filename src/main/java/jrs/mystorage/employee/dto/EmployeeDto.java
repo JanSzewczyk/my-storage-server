@@ -37,9 +37,6 @@ public class EmployeeDto {
     private String addressZip;
 
     @Size(min = 3)
-    private String addressState;
-
-    @Size(min = 3)
     private String addressCountry;
 
     private Timestamp createdAt;

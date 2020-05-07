@@ -52,9 +52,6 @@ public class Employee {
     @Length(min = 3)
     private String addressZip;
 
-    @Column
-    private String addressState;
-
     @Column()
     private String addressCountry;
 

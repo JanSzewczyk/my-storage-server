@@ -41,8 +41,5 @@ public class CreateEmployeeDto {
     private String addressZip;
 
     @Size(min = 3)
-    private String addressState;
-
-    @Size(min = 3)
     private String addressCountry;
 }
