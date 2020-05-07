@@ -1,5 +1,6 @@
 package jrs.mystorage.employee.controller;
 
+import jrs.mystorage.employee.dto.CreateEmployeeDto;
 import jrs.mystorage.employee.dto.EmployeeDto;
 import jrs.mystorage.employee.service.EmployeeService;
 import jrs.mystorage.owner.dto.OwnerDto;
@@ -25,7 +26,7 @@ public class EmployeeController {
 
     @PostMapping
     @PreAuthorize(value = "hasAuthority('OWNER')")
-    public ResponseEntity<EmployeeDto> create(@RequestBody @Valid EmployeeDto employeeDto, final Principal principal) {
+    public ResponseEntity<CreateEmployeeDto> create(@RequestBody @Valid CreateEmployeeDto employeeDto, final Principal principal) {
         System.out.println(principal.getName());
 
         return new ResponseEntity<>(employeeDto, HttpStatus.CREATED);
