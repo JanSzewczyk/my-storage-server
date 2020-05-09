@@ -3,8 +3,7 @@ package jrs.mystorage.owner.model;
 import jrs.mystorage.employee.model.Employee;
 import jrs.mystorage.entity.Product;
 import jrs.mystorage.storage.model.Storage;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -12,12 +11,13 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 @Entity
 @Table(name = "owner")
 public class Owner {
@@ -52,21 +52,21 @@ public class Owner {
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
     )
-    private Set<Employee> employees = new HashSet<>();
+    private List<Employee> employees = new ArrayList<>();
 
     @OneToMany(
             mappedBy = "owner",
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
     )
-    private Set<Storage> storages = new HashSet<>();
+    private List<Storage> storages = new ArrayList<>();
 
     @OneToMany(
             mappedBy = "owner",
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
     )
-    private Set<Product> products = new HashSet<>();
+    private List<Product> products = new ArrayList<>();
 
     @CreationTimestamp
     @Column(updatable = false)

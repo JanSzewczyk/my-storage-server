@@ -2,8 +2,7 @@ package jrs.mystorage.employee.model;
 
 import jrs.mystorage.owner.model.Owner;
 import jrs.mystorage.storage.model.Storage;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -14,7 +13,10 @@ import java.sql.Timestamp;
 import java.util.UUID;
 
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
+@ToString
 @Entity
 @Table(name = "employee")
 public class Employee {

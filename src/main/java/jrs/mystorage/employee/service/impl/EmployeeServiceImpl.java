@@ -12,6 +12,10 @@ import jrs.mystorage.utils.mapper.EmployeeMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
@@ -21,7 +25,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeMapper employeeMapper;
 
     public EmployeeDto createEmployee(String ownerEmail, CreateEmployeeDto newEmployee) {
-
         Owner owner = ownerRepository.findByEmail(ownerEmail).orElseThrow(NotFoundException::new);
 
         Employee employee = employeeMapper.toEntity(newEmployee);
@@ -30,5 +33,14 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeRepository.save(employee);
 
         return employeeMapper.toDto(employee);
+    }
+
+    @Override
+    public List<EmployeeDto> getEmployeeByOwnerEmail(String ownerEmail) {
+        return employeeRepository
+                .findAllByOwnerEmail(ownerEmail)
+                .stream()
+                .map(employeeMapper::toDto)
+                .collect(Collectors.toList());
     }
 }
