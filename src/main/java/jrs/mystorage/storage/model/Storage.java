@@ -1,6 +1,7 @@
 package jrs.mystorage.storage.model;
 
 import jrs.mystorage.employee.model.Employee;
+import jrs.mystorage.entity.Item;
 import jrs.mystorage.owner.model.Owner;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,7 +33,7 @@ public class Storage {
                     CascadeType.MERGE,
                     CascadeType.PERSIST,
                     CascadeType.REFRESH}
-    )
+                    )
     @JoinColumn(name = "owner_id")
     private Owner owner;
 
@@ -43,8 +44,15 @@ public class Storage {
                     CascadeType.MERGE,
                     CascadeType.PERSIST,
                     CascadeType.REFRESH}
-    )
+                    )
     private Set<Employee> employees = new HashSet<>();
+
+    @OneToMany(
+            mappedBy = "storage",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL
+    )
+    private Set<Item> items = new HashSet<>();
 
     @CreationTimestamp
     @Column(updatable = false)
