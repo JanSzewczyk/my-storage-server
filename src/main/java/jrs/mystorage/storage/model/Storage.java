@@ -1,13 +1,12 @@
-package jrs.mystorage.owner.model;
+package jrs.mystorage.storage.model;
 
 import jrs.mystorage.employee.model.Employee;
-import jrs.mystorage.storage.model.Storage;
+import jrs.mystorage.owner.model.Owner;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -18,44 +17,34 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "owner")
-public class Owner {
+@Table(name = "storage")
+public class Storage {
 
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(insertable = false, updatable = false)
-    private UUID ownerId;
+    private UUID storageId;
 
-    @Column(updatable = false, nullable = false, unique = true)
-    private String email;
-
-    @Column(nullable = false)
-    private String password;
-
-    @Column(nullable = false)
-    private String firstName;
-
-    @Column(nullable = false)
-    private String lastName;
-
-    @Length(max = 16)
-    @Column(length = 32, unique = true)
-    private String phone;
+    @ManyToOne(
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH,
+                    CascadeType.MERGE,
+                    CascadeType.PERSIST,
+                    CascadeType.REFRESH}
+    )
+    @JoinColumn(name = "owner_id")
+    private Owner owner;
 
     @OneToMany(
-            mappedBy = "owner",
+            mappedBy = "storage",
             fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL
+            cascade = {CascadeType.DETACH,
+                    CascadeType.MERGE,
+                    CascadeType.PERSIST,
+                    CascadeType.REFRESH}
     )
     private Set<Employee> employees = new HashSet<>();
-
-    @OneToMany(
-            mappedBy = "owner",
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL
-    )
-    private Set<Storage> storages = new HashSet<>();
 
     @CreationTimestamp
     @Column(updatable = false)
