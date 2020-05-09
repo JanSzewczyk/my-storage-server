@@ -1,6 +1,8 @@
 package jrs.mystorage.owner.model;
 
 import jrs.mystorage.employee.model.Employee;
+import jrs.mystorage.entity.Product;
+import jrs.mystorage.storage.model.Storage;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -22,7 +24,10 @@ public class Owner {
 
     @Id
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
     @Column(insertable = false, updatable = false)
     private UUID ownerId;
 
@@ -49,7 +54,19 @@ public class Owner {
     )
     private Set<Employee> employees = new HashSet<>();
 
-    // TODO storage relation
+    @OneToMany(
+            mappedBy = "owner",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL
+    )
+    private Set<Storage> storages = new HashSet<>();
+
+    @OneToMany(
+            mappedBy = "owner",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL
+    )
+    private Set<Product> products = new HashSet<>();
 
     @CreationTimestamp
     @Column(updatable = false)

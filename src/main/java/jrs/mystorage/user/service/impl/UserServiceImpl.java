@@ -1,5 +1,6 @@
 package jrs.mystorage.user.service.impl;
 
+import jrs.mystorage.auth.model.AuthGrantedAuthority;
 import jrs.mystorage.auth.model.Role;
 import jrs.mystorage.employee.model.Employee;
 import jrs.mystorage.employee.repository.EmployeeRepository;
@@ -29,14 +30,14 @@ public class UserServiceImpl implements UserService {
         Optional<Owner> ofOwner = ownerRepository.findByEmail(email);
         if (ofOwner.isPresent()) {
             Owner owner = ofOwner.get();
-            authorities.add(new SimpleGrantedAuthority(Role.OWNER.toString()));
+            authorities.add(new AuthGrantedAuthority(Role.OWNER));
             return Optional.of(new User(owner.getEmail(), owner.getPassword(), authorities));
         }
 
         Optional<Employee> ofEmployee = employeeRepository.findByEmail(email);
         if (ofEmployee.isPresent()) {
             Employee employee = ofEmployee.get();
-            authorities.add(new SimpleGrantedAuthority(Role.EMPLOYEE.toString()));
+            authorities.add(new AuthGrantedAuthority(Role.EMPLOYEE));
             return Optional.of(new User(employee.getEmail(), employee.getPassword(), authorities));
         }
         // TODO create Custom AuthUser
