@@ -1,5 +1,6 @@
 package jrs.mystorage.entity;
 
+import jrs.mystorage.storage.model.Storage;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -16,9 +17,12 @@ public class Item {
 
     @Id
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
     @Column(insertable = false, updatable = false)
-    private UUID productId;
+    private UUID itemId;
 
     @Column
     @Min(1)
@@ -28,13 +32,27 @@ public class Item {
     @Min(0)
     private Double valuePerItem;
 
-    @OneToOne(
+    @ManyToOne(
             fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH,
+            cascade = {
+                    CascadeType.DETACH,
                     CascadeType.MERGE,
                     CascadeType.PERSIST,
-            CascadeType.REFRESH}
-            )
+                    CascadeType.REFRESH
+            }
+    )
     @JoinColumn(name = "product_id")
     private Product product;
+
+    @ManyToOne(
+            fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.DETACH,
+                    CascadeType.MERGE,
+                    CascadeType.PERSIST,
+                    CascadeType.REFRESH
+            }
+    )
+    @JoinColumn(name = "storage_id")
+    private Storage storage;
 }

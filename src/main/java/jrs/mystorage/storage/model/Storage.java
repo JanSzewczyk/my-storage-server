@@ -29,22 +29,26 @@ public class Storage {
 
     @ManyToOne(
             fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH,
+            cascade = {
+                    CascadeType.DETACH,
                     CascadeType.MERGE,
                     CascadeType.PERSIST,
-                    CascadeType.REFRESH}
-                    )
+                    CascadeType.REFRESH
+            }
+    )
     @JoinColumn(name = "owner_id")
     private Owner owner;
 
     @OneToMany(
             mappedBy = "storage",
             fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH,
+            cascade = {
+                    CascadeType.DETACH,
                     CascadeType.MERGE,
                     CascadeType.PERSIST,
-                    CascadeType.REFRESH}
-                    )
+                    CascadeType.REFRESH
+            }
+    )
     private Set<Employee> employees = new HashSet<>();
 
     @OneToMany(
