@@ -1,6 +1,6 @@
 package jrs.mystorage.employee.service.impl;
 
-import jrs.mystorage.employee.dto.CreateEmployeeDto;
+import jrs.mystorage.employee.dto.CUEmployeeDto;
 import jrs.mystorage.employee.dto.EmployeeDto;
 import jrs.mystorage.employee.model.Employee;
 import jrs.mystorage.employee.repository.EmployeeRepository;
@@ -10,10 +10,11 @@ import jrs.mystorage.owner.repository.OwnerRepository;
 import jrs.mystorage.utils.exception.NotFoundException;
 import jrs.mystorage.utils.mapper.EmployeeMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,14 +25,17 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final OwnerRepository ownerRepository;
     private final EmployeeMapper employeeMapper;
 
-    public EmployeeDto createEmployee(String ownerEmail, CreateEmployeeDto newEmployee) {
-        Owner owner = ownerRepository.findByEmail(ownerEmail).orElseThrow(NotFoundException::new);
+    @Override
+    public EmployeeDto createEmployee(String ownerEmail, CUEmployeeDto newEmployee) {
+        Owner owner = ownerRepository.findByEmail(ownerEmail)
+                .orElseThrow(NotFoundException::new);
+
+        System.out.println(newEmployee);
 
         Employee employee = employeeMapper.toEntity(newEmployee);
         employee.setOwner(owner);
 
         employeeRepository.save(employee);
-
         return employeeMapper.toDto(employee);
     }
 
@@ -42,5 +46,22 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .stream()
                 .map(employeeMapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public EmployeeDto removeEmployee(String ownerEmail, UUID employeeId) {
+        Employee employee = employeeRepository.findByEmployeeIdAndOwnerEmail(employeeId, ownerEmail)
+                .orElseThrow(NotFoundException::new);
+
+        employeeRepository.delete(employee);
+        return employeeMapper.toDto(employee);
+    }
+
+    @Override
+    public EmployeeDto updateEmployee(UUID employeeId, CUEmployeeDto updatedEmployee) {
+        Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(NotFoundException::new);
+        employeeRepository.save(employeeMapper.updateEntity(updatedEmployee, employee));
+        return employeeMapper.toDto(employee);
     }
 }

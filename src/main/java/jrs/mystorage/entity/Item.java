@@ -1,8 +1,7 @@
 package jrs.mystorage.entity;
 
 import jrs.mystorage.storage.model.Storage;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -11,6 +10,9 @@ import java.util.UUID;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 @Entity
 @Table(name = "item")
 public class Item {
