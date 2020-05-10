@@ -16,6 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -43,10 +45,16 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public PagedModel<EmployeeDto> getEmployeesByOwnerEmail(String ownerEmail, Pageable pageable) {
-
         Page<Employee> employees = employeeRepository.findAllByOwnerEmail(ownerEmail, pageable);
-
         return employeePagedResourcesAssembler.toModel(employees, employeeMapper::toDto);
+    }
+
+    @Override
+    public EmployeeDto getEmployees(String ownerEmail, UUID employeeId) {
+        Employee employee = employeeRepository.findByEmployeeIdAndOwnerEmail(employeeId, ownerEmail)
+                .orElseThrow(NotFoundException::new);
+
+        return employeeMapper.toDto(employee);
     }
 
     @Override

@@ -9,11 +9,13 @@ import java.util.UUID;
 
 public interface EmployeeService {
 
-    EmployeeDto createEmployee(String ownerEmail, CUEmployeeDto newEmployee);
-
     PagedModel<EmployeeDto> getEmployeesByOwnerEmail(String ownerEmail, Pageable pageable);
 
-    EmployeeDto removeEmployee(String ownerEmail, UUID employeeId);
+    EmployeeDto getEmployees(String ownerEmail, UUID employeeId);
+
+    EmployeeDto createEmployee(String ownerEmail, CUEmployeeDto newEmployee);
 
     EmployeeDto updateEmployee(UUID employeeId, CUEmployeeDto updatedEmployee);
+
+    EmployeeDto removeEmployee(String ownerEmail, UUID employeeId);
 }

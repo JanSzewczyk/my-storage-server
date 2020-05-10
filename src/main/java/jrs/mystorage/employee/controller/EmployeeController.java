@@ -36,7 +36,15 @@ public class EmployeeController {
         return new ResponseEntity<>(employeesByOwnerEmail, HttpStatus.OK);
     }
 
-    // TODO create get employee by id
+    @GetMapping("/{employeeId}")
+    @PreAuthorize(value = "hasAuthority('OWNER')")
+    public ResponseEntity<EmployeeDto> getEmployee(
+            final Principal principal,
+            @PathVariable UUID employeeId
+    ) {
+        EmployeeDto employee = employeeService.getEmployees(principal.getName(), employeeId);
+        return new ResponseEntity<>(employee, HttpStatus.OK);
+    }
 
     @PostMapping
     @PreAuthorize(value = "hasAuthority('OWNER')")
