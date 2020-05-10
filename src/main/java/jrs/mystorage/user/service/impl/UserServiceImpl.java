@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
             authorities.add(new AuthGrantedAuthority(Role.EMPLOYEE));
             return Optional.of(new User(employee.getEmail(), employee.getPassword(), authorities));
         }
-        // TODO create Custom AuthUser
+
         return Optional.empty();
     }
 }

@@ -11,9 +11,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Data
 @NoArgsConstructor
@@ -49,14 +47,14 @@ public class Storage {
                     CascadeType.REFRESH
             }
     )
-    private Set<Employee> employees = new HashSet<>();
+    private List<Employee> employees = new ArrayList<>();
 
     @OneToMany(
             mappedBy = "storage",
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
     )
-    private Set<Item> items = new HashSet<>();
+    private List<Item> items = new ArrayList<>();
 
     @CreationTimestamp
     @Column(updatable = false)

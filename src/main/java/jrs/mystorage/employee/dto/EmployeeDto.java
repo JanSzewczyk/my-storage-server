@@ -4,6 +4,9 @@ import jrs.mystorage.utils.validator.annotation.EmailValid;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
@@ -12,7 +15,8 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmployeeDto {
+@Relation(collectionRelation = "employees", itemRelation = "employee")
+public class EmployeeDto extends RepresentationModel<EmployeeDto> {
 
     private UUID employeeId;
 
