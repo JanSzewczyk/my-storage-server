@@ -1,7 +1,5 @@
 package jrs.mystorage.owner.controller;
 
-import jrs.mystorage.employee.dto.CUEmployeeDto;
-import jrs.mystorage.employee.dto.EmployeeDto;
 import jrs.mystorage.owner.dto.OwnerDto;
 import jrs.mystorage.owner.dto.UOwnerDto;
 import jrs.mystorage.owner.service.OwnerService;

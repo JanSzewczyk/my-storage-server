@@ -1,7 +1,8 @@
 package jrs.mystorage.utils.mapper;
 
-import jrs.mystorage.employee.dto.CUEmployeeDto;
+import jrs.mystorage.employee.dto.CEmployeeDto;
 import jrs.mystorage.employee.dto.EmployeeDto;
+import jrs.mystorage.employee.dto.UEmployeeDto;
 import jrs.mystorage.employee.model.Employee;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -20,15 +21,14 @@ public class EmployeeMapper extends Mapper<Employee, EmployeeDto>  {
         return mapper.map(employeeDto, Employee.class);
     }
 
-    public Employee toEntity(CUEmployeeDto newEmployeeDto) {
+    public Employee toEntity(CEmployeeDto newEmployeeDto) {
         Employee employee = mapper.map(newEmployeeDto, Employee.class);
         employee.setPassword(passwordEncoder.encode(newEmployeeDto.getPassword()));
         return employee;
     }
 
-    public Employee updateEntity(CUEmployeeDto employeeDto, Employee employee) {
-        // TODO null as password - not change password
-        mapper.map(employeeDto, employee);
+    public Employee updateEntity(UEmployeeDto updatedEmployee, Employee employee) {
+        mapper.map(updatedEmployee, employee);
         return employee;
     }
 

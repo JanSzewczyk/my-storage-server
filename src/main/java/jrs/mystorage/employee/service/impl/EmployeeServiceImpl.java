@@ -1,7 +1,8 @@
 package jrs.mystorage.employee.service.impl;
 
-import jrs.mystorage.employee.dto.CUEmployeeDto;
+import jrs.mystorage.employee.dto.CEmployeeDto;
 import jrs.mystorage.employee.dto.EmployeeDto;
+import jrs.mystorage.employee.dto.UEmployeeDto;
 import jrs.mystorage.employee.model.Employee;
 import jrs.mystorage.employee.repository.EmployeeRepository;
 import jrs.mystorage.employee.service.EmployeeService;
@@ -17,7 +18,6 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -30,15 +30,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeMapper employeeMapper;
 
     @Override
-    public EmployeeDto createEmployee(String ownerEmail, CUEmployeeDto newEmployee) {
+    public EmployeeDto createEmployee(String ownerEmail, CEmployeeDto newEmployee) {
         Owner owner = ownerRepository.findByEmail(ownerEmail)
                 .orElseThrow(NotFoundException::new);
-
-        System.out.println(newEmployee);
-
         Employee employee = employeeMapper.toEntity(newEmployee);
         employee.setOwner(owner);
-
         employeeRepository.save(employee);
         return employeeMapper.toDto(employee);
     }
@@ -53,7 +49,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeDto getEmployees(String ownerEmail, UUID employeeId) {
         Employee employee = employeeRepository.findByEmployeeIdAndOwnerEmail(employeeId, ownerEmail)
                 .orElseThrow(NotFoundException::new);
-
         return employeeMapper.toDto(employee);
     }
 
@@ -61,15 +56,17 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeDto removeEmployee(String ownerEmail, UUID employeeId) {
         Employee employee = employeeRepository.findByEmployeeIdAndOwnerEmail(employeeId, ownerEmail)
                 .orElseThrow(NotFoundException::new);
-
         employeeRepository.delete(employee);
         return employeeMapper.toDto(employee);
     }
 
     @Override
-    public EmployeeDto updateEmployee(UUID employeeId, CUEmployeeDto updatedEmployee) {
+    public EmployeeDto updateEmployee(UUID employeeId, UEmployeeDto updatedEmployee) {
         Employee employee = employeeRepository.findById(employeeId)
                 .orElseThrow(NotFoundException::new);
+        if (updatedEmployee.getPassword().equals("")) {
+            updatedEmployee.setPassword(employee.getPassword());
+        }
         employeeRepository.save(employeeMapper.updateEntity(updatedEmployee, employee));
         return employeeMapper.toDto(employee);
     }

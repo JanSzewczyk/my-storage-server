@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CUEmployeeDto {
+public class CEmployeeDto {
 
     @EmailValid
     @UniqueEmailValid

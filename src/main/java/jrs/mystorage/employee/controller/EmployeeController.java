@@ -1,7 +1,8 @@
 package jrs.mystorage.employee.controller;
 
-import jrs.mystorage.employee.dto.CUEmployeeDto;
+import jrs.mystorage.employee.dto.CEmployeeDto;
 import jrs.mystorage.employee.dto.EmployeeDto;
+import jrs.mystorage.employee.dto.UEmployeeDto;
 import jrs.mystorage.employee.service.EmployeeService;
 
 import lombok.RequiredArgsConstructor;
@@ -47,7 +48,7 @@ public class EmployeeController {
     @PostMapping
     @PreAuthorize(value = "hasAuthority('OWNER')")
     public ResponseEntity<EmployeeDto> createNewEmployee(
-            @RequestBody @Valid CUEmployeeDto employeeDto,
+            @RequestBody @Valid CEmployeeDto employeeDto,
             final Principal principal
     ) {
         EmployeeDto employee = employeeService.createEmployee(principal.getName(), employeeDto);
@@ -58,7 +59,7 @@ public class EmployeeController {
     @PreAuthorize(value = "hasAuthority('OWNER')")
     public ResponseEntity<EmployeeDto> updateEmployee(
             @PathVariable UUID employeeId,
-            @RequestBody @Valid CUEmployeeDto updatedEmployee
+            @RequestBody @Valid UEmployeeDto updatedEmployee
     ) {
         EmployeeDto employee = employeeService.updateEmployee(employeeId, updatedEmployee);
         return new ResponseEntity<>(employee, HttpStatus.OK);
