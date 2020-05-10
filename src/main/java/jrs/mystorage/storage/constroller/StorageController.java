@@ -40,7 +40,7 @@ public class StorageController {
             final Principal principal,
             @PathVariable UUID storageId
     ) {
-        storageService.getStorage(storageId);
+        storageService.getStorage(principal.getName(), storageId);
 
         return new ResponseEntity<>(null, HttpStatus.OK);
     }

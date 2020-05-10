@@ -11,7 +11,7 @@ public interface StorageService {
 
     PagedModel<StorageDto> getOwnerStorages(String ownerEmail, Pageable pageable);
 
-    StorageDto getStorage(UUID storageId);
+    StorageDto getStorage(String userEmail, UUID storageId);
 
     StorageDto createStorage(String ownerEmail, CUStorageDto newStorage);
 
