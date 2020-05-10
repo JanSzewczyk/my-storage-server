@@ -22,6 +22,18 @@ spring:
     url: jdbc:postgresql://localhost:5432/my-storage
     username: jrs
     password: ""
+  data:
+    web:
+      pageable:
+        size-parameter: size
+        page-parameter: page
+        default-page-size: 20
+        one-indexed-parameters: false
+        max-page-size: 100
+        qualifier-delimiter: ""
+        prefix: ""
+  hateoas:
+    use-hal-as-default-json-media-type: false
 
 security:
   oauth2:

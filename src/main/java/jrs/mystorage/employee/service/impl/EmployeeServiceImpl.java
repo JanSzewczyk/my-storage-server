@@ -10,17 +10,19 @@ import jrs.mystorage.owner.repository.OwnerRepository;
 import jrs.mystorage.utils.exception.NotFoundException;
 import jrs.mystorage.utils.mapper.EmployeeMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
 
-import java.util.List;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.stereotype.Service;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
 
+    private final PagedResourcesAssembler<Employee> employeePagedResourcesAssembler;
     private final EmployeeRepository employeeRepository;
     private final OwnerRepository ownerRepository;
     private final EmployeeMapper employeeMapper;
@@ -40,12 +42,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<EmployeeDto> getEmployeeByOwnerEmail(String ownerEmail) {
-        return employeeRepository
-                .findAllByOwnerEmail(ownerEmail)
-                .stream()
-                .map(employeeMapper::toDto)
-                .collect(Collectors.toList());
+    public PagedModel<EmployeeDto> getEmployeesByOwnerEmail(String ownerEmail, Pageable pageable) {
+
+        Page<Employee> employees = employeeRepository.findAllByOwnerEmail(ownerEmail, pageable);
+
+        return employeePagedResourcesAssembler.toModel(employees, employeeMapper::toDto);
     }
 
     @Override

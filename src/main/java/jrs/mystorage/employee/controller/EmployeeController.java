@@ -5,6 +5,9 @@ import jrs.mystorage.employee.dto.EmployeeDto;
 import jrs.mystorage.employee.service.EmployeeService;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,12 +28,15 @@ public class EmployeeController {
 
     @GetMapping
     @PreAuthorize(value = "hasAuthority('OWNER')")
-    public ResponseEntity<List<EmployeeDto>> getEmployees(
-            final Principal principal
+    public ResponseEntity<PagedModel<EmployeeDto>> getEmployees(
+            final Principal principal,
+            Pageable pageable
     ) {
-        List<EmployeeDto> employees = employeeService.getEmployeeByOwnerEmail(principal.getName());
-        return new ResponseEntity<>(employees, HttpStatus.OK);
+        PagedModel<EmployeeDto> employeesByOwnerEmail = employeeService.getEmployeesByOwnerEmail(principal.getName(), pageable);
+        return new ResponseEntity<>(employeesByOwnerEmail, HttpStatus.OK);
     }
+
+    // TODO create get employee by id
 
     @PostMapping
     @PreAuthorize(value = "hasAuthority('OWNER')")
