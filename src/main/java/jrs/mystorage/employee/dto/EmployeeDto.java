@@ -1,8 +1,10 @@
 package jrs.mystorage.employee.dto;
 
+import jrs.mystorage.user.dto.UserDto;
 import jrs.mystorage.utils.validator.annotation.EmailValid;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
@@ -15,8 +17,9 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Relation(collectionRelation = "employees", itemRelation = "employee")
-public class EmployeeDto extends RepresentationModel<EmployeeDto> {
+public class EmployeeDto extends RepresentationModel<EmployeeDto> implements UserDto {
 
     private UUID employeeId;
 
