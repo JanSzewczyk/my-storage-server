@@ -55,7 +55,7 @@ public class Employee {
     @Length(min = 3)
     private String addressZip;
 
-    @Column()
+    @Column
     private String addressCountry;
 
     @ManyToOne(

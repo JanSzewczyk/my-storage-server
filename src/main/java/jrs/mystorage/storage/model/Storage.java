@@ -8,8 +8,10 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -21,9 +23,35 @@ public class Storage {
 
     @Id
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
     @Column(insertable = false, updatable = false)
     private UUID storageId;
+
+    @Column(nullable = false)
+    @Length(min = 3, max = 255)
+    private String name;
+
+    @Column(nullable = false)
+    @Min(0)
+    private Double surface;
+
+    @Column
+    @Length(min = 3)
+    private String addressStreet;
+
+    @Column
+    @Length(min = 3)
+    private String addressCity;
+
+    @Column
+    @Length(min = 3)
+    private String addressZip;
+
+    @Column
+    private String addressCountry;
 
     @ManyToOne(
             fetch = FetchType.LAZY,
