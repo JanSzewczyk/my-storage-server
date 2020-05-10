@@ -1,8 +1,12 @@
 package jrs.mystorage.owner.dto;
 
+import jrs.mystorage.user.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
 import java.sql.Timestamp;
 import java.util.UUID;
@@ -10,11 +14,12 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OwnerDto {
+@EqualsAndHashCode(callSuper = true)
+@Relation(collectionRelation = "employees", itemRelation = "employee")
+public class OwnerDto extends RepresentationModel<OwnerDto> implements UserDto {
 
     private UUID ownerId;
     private String email;
-    private String password;
     private String firstName;
     private String lastName;
     private String phone;

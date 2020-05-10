@@ -6,10 +6,13 @@ import jrs.mystorage.employee.model.Employee;
 import jrs.mystorage.employee.repository.EmployeeRepository;
 import jrs.mystorage.owner.model.Owner;
 import jrs.mystorage.owner.repository.OwnerRepository;
+import jrs.mystorage.user.dto.UserDetailsDto;
 import jrs.mystorage.user.service.UserService;
+import jrs.mystorage.utils.exception.NotFoundException;
+import jrs.mystorage.utils.mapper.EmployeeMapper;
+import jrs.mystorage.utils.mapper.OwnerMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +26,9 @@ public class UserServiceImpl implements UserService {
 
     private final OwnerRepository ownerRepository;
     private final EmployeeRepository employeeRepository;
+
+    private final EmployeeMapper employeeMapper;
+    private final OwnerMapper ownerMapper;
 
     public Optional<User> findAuthUserByEmail(String email) {
         List<GrantedAuthority> authorities = new ArrayList<>();
@@ -43,4 +49,21 @@ public class UserServiceImpl implements UserService {
 
         return Optional.empty();
     }
+
+    @Override
+    public UserDetailsDto getUserDetails(String userEmail) {
+        Optional<Owner> owner = ownerRepository.findByEmail(userEmail);
+        if (owner.isPresent()) {
+            return new UserDetailsDto(ownerMapper.toDto(owner.get()), Role.OWNER);
+        }
+
+        Optional<Employee> ofEmployee = employeeRepository.findByEmail(userEmail);
+        if (ofEmployee.isPresent()) {
+            return new UserDetailsDto(employeeMapper.toDto(ofEmployee.get()), Role.EMPLOYEE);
+        }
+
+        throw new NotFoundException();
+    }
+
+
 }
