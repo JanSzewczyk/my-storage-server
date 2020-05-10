@@ -3,7 +3,9 @@ package jrs.mystorage.storage.constroller;
 import jrs.mystorage.employee.dto.EmployeeDto;
 import jrs.mystorage.storage.dto.CUStorageDto;
 import jrs.mystorage.storage.dto.StorageDto;
+import jrs.mystorage.storage.service.StorageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,13 +21,15 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class StorageController {
 
-    // private final StorageService storageService;
+    private final StorageService storageService;
 
     @GetMapping
     @PreAuthorize(value = "hasAuthority('OWNER')")
     public ResponseEntity<PagedModel<StorageDto>> getOwnerStorages(
-            final Principal principal
+            final Principal principal,
+            Pageable pageable
     ) {
+        storageService.getOwnerStorages(principal.getName(), pageable);
 
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
@@ -36,6 +40,7 @@ public class StorageController {
             final Principal principal,
             @PathVariable UUID storageId
     ) {
+        storageService.getStorage(storageId);
 
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
@@ -46,6 +51,7 @@ public class StorageController {
             final Principal principal,
             @RequestBody @Valid CUStorageDto newStorage
     ) {
+        storageService.createStorage(principal.getName(), newStorage);
 
         return new ResponseEntity<>(null, HttpStatus.CREATED);
     }
@@ -57,7 +63,7 @@ public class StorageController {
             @PathVariable UUID storageId,
             @RequestBody @Valid CUStorageDto updatedStorage
     ) {
-
+        storageService.updateStorage(principal.getName(), storageId, updatedStorage);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
@@ -67,7 +73,7 @@ public class StorageController {
             final Principal principal,
             @PathVariable UUID storageId
     ) {
-
+        storageService.removeOwnerStorage(principal.getName(), storageId);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 }

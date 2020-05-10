@@ -12,6 +12,7 @@ import jrs.mystorage.utils.exception.NotFoundException;
 import jrs.mystorage.utils.mapper.EmployeeMapper;
 import jrs.mystorage.utils.mapper.OwnerMapper;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.asm.Advice;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
@@ -65,5 +66,14 @@ public class UserServiceImpl implements UserService {
         throw new NotFoundException();
     }
 
+    @Override
+    public Role getUserTypByEmail(String userEmail) {
+        if (ownerRepository.findByEmail(userEmail).isPresent())
+            return Role.OWNER;
 
+        if (employeeRepository.findByEmail(userEmail).isPresent())
+            return Role.EMPLOYEE;
+
+        throw new NotFoundException();
+    }
 }
