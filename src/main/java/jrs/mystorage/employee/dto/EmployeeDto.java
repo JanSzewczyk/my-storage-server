@@ -2,6 +2,7 @@ package jrs.mystorage.employee.dto;
 
 import jrs.mystorage.user.dto.UserDto;
 import jrs.mystorage.utils.validator.annotation.EmailValid;
+import jrs.mystorage.utils.validator.annotation.PhoneNoValid;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -29,9 +30,11 @@ public class EmployeeDto extends RepresentationModel<EmployeeDto> implements Use
     @NotNull
     private String firstName;
 
+    @NotNull
     private String lastName;
 
     @Size(max = 16)
+    @PhoneNoValid
     private String phone;
 
     @Size(min = 3)

@@ -42,4 +42,6 @@ public class CUEmployeeDto {
 
     @Size(min = 3)
     private String addressCountry;
+
+    // TODO store_id
 }

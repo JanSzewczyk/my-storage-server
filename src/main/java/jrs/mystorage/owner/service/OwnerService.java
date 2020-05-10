@@ -1,8 +1,9 @@
 package jrs.mystorage.owner.service;
 
-import org.springframework.security.core.userdetails.User;
-
-import java.util.Optional;
+import jrs.mystorage.owner.dto.OwnerDto;
+import jrs.mystorage.owner.dto.UOwnerDto;
 
 public interface OwnerService {
+
+    OwnerDto updateOwner(UOwnerDto updatedOwner, String ownerEmail);
 }
