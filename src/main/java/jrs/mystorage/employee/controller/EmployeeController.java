@@ -25,6 +25,8 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
 
+    // TODO crete assignEmployeeToStorage
+
     @GetMapping
     @PreAuthorize(value = "hasAuthority('OWNER')")
     public ResponseEntity<PagedModel<EmployeeDto>> getEmployees(
@@ -34,6 +36,8 @@ public class EmployeeController {
         PagedModel<EmployeeDto> employeesByOwnerEmail = employeeService.getEmployeesByOwnerEmail(principal.getName(), pageable);
         return new ResponseEntity<>(employeesByOwnerEmail, HttpStatus.OK);
     }
+
+    // TODO get not assign employee
 
     @GetMapping("/{employeeId}")
     @PreAuthorize(value = "hasAuthority('OWNER')")
@@ -45,6 +49,7 @@ public class EmployeeController {
         return new ResponseEntity<>(employee, HttpStatus.OK);
     }
 
+    // TODO default storage
     @PostMapping
     @PreAuthorize(value = "hasAuthority('OWNER')")
     public ResponseEntity<EmployeeDto> createNewEmployee(

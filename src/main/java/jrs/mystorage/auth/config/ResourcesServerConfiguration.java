@@ -35,6 +35,7 @@ public class ResourcesServerConfiguration extends ResourceServerConfigurerAdapte
 //                .antMatchers("/signUp/**").permitAll()
                 .antMatchers("/owners/**" ).authenticated()
                 .antMatchers("/employees/**" ).authenticated()
+                .antMatchers("/storages/**" ).authenticated()
                 .antMatchers("/users/**" ).authenticated()
         ;
     }

@@ -1,6 +1,5 @@
 package jrs.mystorage.storage.constroller;
 
-import jrs.mystorage.employee.dto.EmployeeDto;
 import jrs.mystorage.storage.dto.CUStorageDto;
 import jrs.mystorage.storage.dto.StorageDto;
 import jrs.mystorage.storage.service.StorageService;
@@ -29,9 +28,8 @@ public class StorageController {
             final Principal principal,
             Pageable pageable
     ) {
-        storageService.getOwnerStorages(principal.getName(), pageable);
-
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        PagedModel<StorageDto> ownerStorages = storageService.getOwnerStorages(principal.getName(), pageable);
+        return new ResponseEntity<>(ownerStorages, HttpStatus.OK);
     }
 
     @GetMapping("/{storageId}")
@@ -40,9 +38,8 @@ public class StorageController {
             final Principal principal,
             @PathVariable UUID storageId
     ) {
-        storageService.getStorage(principal.getName(), storageId);
-
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        StorageDto storage = storageService.getStorage(principal.getName(), storageId);
+        return new ResponseEntity<>(storage, HttpStatus.OK);
     }
 
     @PostMapping
@@ -51,29 +48,28 @@ public class StorageController {
             final Principal principal,
             @RequestBody @Valid CUStorageDto newStorage
     ) {
-        storageService.createStorage(principal.getName(), newStorage);
-
-        return new ResponseEntity<>(null, HttpStatus.CREATED);
+        StorageDto storage = storageService.createStorage(principal.getName(), newStorage);
+        return new ResponseEntity<>(storage, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{storageId]")
+    @PutMapping("/{storageId}")
     @PreAuthorize(value = "hasAuthority('OWNER')")
     public ResponseEntity<StorageDto> updateStorage(
             final Principal principal,
             @PathVariable UUID storageId,
             @RequestBody @Valid CUStorageDto updatedStorage
     ) {
-        storageService.updateStorage(principal.getName(), storageId, updatedStorage);
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        StorageDto storageDto = storageService.updateStorage(principal.getName(), storageId, updatedStorage);
+        return new ResponseEntity<>(storageDto, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{storageId]")
+    @DeleteMapping("/{storageId}")
     @PreAuthorize(value = "hasAuthority('OWNER')")
     public ResponseEntity<StorageDto> removeStorage(
             final Principal principal,
             @PathVariable UUID storageId
     ) {
-        storageService.removeOwnerStorage(principal.getName(), storageId);
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        StorageDto storageDto = storageService.removeOwnerStorage(principal.getName(), storageId);
+        return new ResponseEntity<>(storageDto, HttpStatus.OK);
     }
 }

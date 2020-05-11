@@ -12,5 +12,5 @@ public interface UserService {
 
     UserDetailsDto getUserDetails(String userEmail);
 
-    Role getUserTypByEmail(String userEmail);
+    Role getUserTypeByEmail(String userEmail);
 }

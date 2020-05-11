@@ -3,8 +3,7 @@ package jrs.mystorage.storage.model;
 import jrs.mystorage.employee.model.Employee;
 import jrs.mystorage.entity.Item;
 import jrs.mystorage.owner.model.Owner;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -17,6 +16,9 @@ import java.util.*;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 @Entity
 @Table(name = "storage")
 public class Storage {

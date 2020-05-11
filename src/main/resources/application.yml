@@ -59,3 +59,10 @@ management:
   endpoint:
     health:
       show-details: always
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type: TRACE

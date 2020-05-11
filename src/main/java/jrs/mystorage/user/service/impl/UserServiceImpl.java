@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Role getUserTypByEmail(String userEmail) {
+    public Role getUserTypeByEmail(String userEmail) {
         if (ownerRepository.findByEmail(userEmail).isPresent())
             return Role.OWNER;
 
