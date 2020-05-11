@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Size;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -38,4 +39,6 @@ public class UEmployeeDto {
 
     @Size(min = 3)
     private String addressCountry;
+
+    private UUID storageId;
 }

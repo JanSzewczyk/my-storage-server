@@ -8,6 +8,8 @@ import jrs.mystorage.employee.repository.EmployeeRepository;
 import jrs.mystorage.employee.service.EmployeeService;
 import jrs.mystorage.owner.model.Owner;
 import jrs.mystorage.owner.repository.OwnerRepository;
+import jrs.mystorage.storage.model.Storage;
+import jrs.mystorage.storage.repository.StorageRepository;
 import jrs.mystorage.utils.exception.NotFoundException;
 import jrs.mystorage.utils.mapper.EmployeeMapper;
 import lombok.RequiredArgsConstructor;
@@ -28,13 +30,23 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final OwnerRepository ownerRepository;
     private final EmployeeMapper employeeMapper;
+    private final StorageRepository storageRepository;
 
     @Override
     public EmployeeDto createEmployee(String ownerEmail, CEmployeeDto newEmployee) {
         Owner owner = ownerRepository.findByEmail(ownerEmail)
                 .orElseThrow(NotFoundException::new);
+
         Employee employee = employeeMapper.toEntity(newEmployee);
         employee.setOwner(owner);
+
+        if (newEmployee.getStorageId() != null) {
+            Storage storage = storageRepository.findByStorageIdAndOwnerEmail(newEmployee.getStorageId(), ownerEmail)
+                    .orElseThrow(NotFoundException::new);
+
+            employee.setStorage(storage);
+        }
+
         employeeRepository.save(employee);
         return employeeMapper.toDto(employee);
     }
@@ -60,14 +72,27 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeMapper.toDto(employee);
     }
 
+    //TODO Refactor code
     @Override
-    public EmployeeDto updateEmployee(UUID employeeId, UEmployeeDto updatedEmployee) {
+    public EmployeeDto updateEmployee(String ownerEmail, UUID employeeId, UEmployeeDto updatedEmployee) {
         Employee employee = employeeRepository.findById(employeeId)
                 .orElseThrow(NotFoundException::new);
+
         if (updatedEmployee.getPassword().equals("")) {
             updatedEmployee.setPassword(employee.getPassword());
         }
-        employeeRepository.save(employeeMapper.updateEntity(updatedEmployee, employee));
+        System.out.println(updatedEmployee);
+        if ((employee.getStorage() == null && updatedEmployee.getStorageId() != null) || (updatedEmployee.getStorageId() != null && employee.getStorage().getStorageId() != updatedEmployee.getStorageId())) {
+            Storage storage = storageRepository.findByStorageIdAndOwnerEmail(updatedEmployee.getStorageId(), ownerEmail)
+                    .orElseThrow(NotFoundException::new);
+            employee.setStorage(storage);
+        } else if (updatedEmployee.getStorageId() == null ) {
+            employee.setStorage(null);
+        }
+
+
+        Employee employee1 = employeeMapper.updateEntity(updatedEmployee, employee);
+        employeeRepository.save(employee1);
         return employeeMapper.toDto(employee);
     }
 }

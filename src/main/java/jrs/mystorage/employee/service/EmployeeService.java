@@ -16,7 +16,7 @@ public interface EmployeeService {
 
     EmployeeDto createEmployee(String ownerEmail, CEmployeeDto newEmployee);
 
-    EmployeeDto updateEmployee(UUID employeeId, UEmployeeDto updatedEmployee);
+    EmployeeDto updateEmployee(String ownerEmail, UUID employeeId, UEmployeeDto updatedEmployee);
 
     EmployeeDto removeEmployee(String ownerEmail, UUID employeeId);
 }

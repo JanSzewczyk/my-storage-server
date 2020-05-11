@@ -63,10 +63,11 @@ public class EmployeeController {
     @PutMapping("/{employeeId}")
     @PreAuthorize(value = "hasAuthority('OWNER')")
     public ResponseEntity<EmployeeDto> updateEmployee(
+            final Principal principal,
             @PathVariable UUID employeeId,
             @RequestBody @Valid UEmployeeDto updatedEmployee
     ) {
-        EmployeeDto employee = employeeService.updateEmployee(employeeId, updatedEmployee);
+        EmployeeDto employee = employeeService.updateEmployee(principal.getName(), employeeId, updatedEmployee);
         return new ResponseEntity<>(employee, HttpStatus.OK);
     }
 

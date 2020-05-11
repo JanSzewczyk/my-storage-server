@@ -9,12 +9,21 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+
 @Component
 @RequiredArgsConstructor
 public class EmployeeMapper extends Mapper<Employee, EmployeeDto>  {
 
     private final ModelMapper mapper;
     private final PasswordEncoder passwordEncoder;
+
+    @PostConstruct
+    public void init() {
+        mapper.typeMap(UEmployeeDto.class, Employee.class).addMappings(m -> {
+            m.skip(Employee::setEmployeeId);
+        });
+    }
 
     @Override
     public Employee toEntity(EmployeeDto employeeDto) {
