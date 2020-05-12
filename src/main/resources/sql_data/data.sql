@@ -4,7 +4,8 @@ VALUES ('02346256-44b2-4811-917a-6ad03c56036e', '2016-05-06 19:53:58.000000', 'j
        ('3272d037-bd1f-4cc2-8991-20587bb97048', '2020-05-01 14:43:58.000000', 'mietek123@gmail.com', 'Mieczysław', 'Akumulatorski', '$2a$10$jXXKMhNsw/l7FFuzKsfHAOH.qv881bSrQF8L.pQ/2QprSU8jzwyxm', '+48531329239', '2020-05-06 21:54:09.000000');
 
 INSERT INTO storage(storage_id, address_city, address_country, address_street, address_zip, created_at, name, surface, updated_at, owner_id)
-VALUES ('3a78e3ed-bd55-4a09-b7f8-77fded2ff23e', 'Kraków', 'Poland', 'ul Warszawska 21', '31-476', '2020-05-11 22:13:02.202000', 'Old workshop', 312, '2020-05-11 22:13:02.202000', '02346256-44b2-4811-917a-6ad03c56036e');
+VALUES ('3a78e3ed-bd55-4a09-b7f8-77fded2ff23e', 'Kraków', 'Poland', 'ul Warszawska 21', '31-476', '2020-05-11 22:13:02.202000', 'Old workshop', 312, '2020-05-11 22:13:02.202000', '02346256-44b2-4811-917a-6ad03c56036e'),
+       ('0227f014-a92e-4db6-8234-f37af702fc2c', 'Warszawa', 'Poland', 'ul. Krajeńska 49', '01-473', '2020-05-11 22:13:02.202000', 'New warehouse', 512, '2020-05-12 22:13:02.202000', '02346256-44b2-4811-917a-6ad03c56036e');
 
 INSERT INTO employee(employee_id, address_city, address_country, address_street, address_zip, created_at, email, first_name, last_name, password, phone, updated_at, owner_id, storage_id)
 VALUES ('25324e68-7f35-47f0-b091-2077fd8f8299', 'Turawa', 'Poland', 'ul. Opolska 64', '46-045', '2019-08-16 14:53:09.000000', 'hans@gmail.com', 'Hans', 'Kloss', '$2a$10$jXXKMhNsw/l7FFuzKsfHAOH.qv881bSrQF8L.pQ/2QprSU8jzwyxm', '+48385940285', '2020-01-16 09:34:09.000000', '02346256-44b2-4811-917a-6ad03c56036e', null),

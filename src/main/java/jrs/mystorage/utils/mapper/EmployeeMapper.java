@@ -23,6 +23,10 @@ public class EmployeeMapper extends Mapper<Employee, EmployeeDto>  {
         mapper.typeMap(UEmployeeDto.class, Employee.class).addMappings(m -> {
             m.skip(Employee::setEmployeeId);
         });
+
+        mapper.typeMap(CEmployeeDto.class, Employee.class).addMappings(m -> {
+            m.skip(Employee::setEmployeeId);
+        });
     }
 
     @Override
