@@ -1,11 +1,11 @@
 package jrs.mystorage.storage.service.impl;
 
 import jrs.mystorage.auth.model.Role;
-import jrs.mystorage.employee.repository.EmployeeRepository;
 import jrs.mystorage.owner.model.Owner;
 import jrs.mystorage.owner.repository.OwnerRepository;
 import jrs.mystorage.storage.dto.CUStorageDto;
 import jrs.mystorage.storage.dto.StorageDto;
+import jrs.mystorage.storage.dto.StorageViewDto;
 import jrs.mystorage.storage.model.Storage;
 import jrs.mystorage.storage.repository.StorageRepository;
 import jrs.mystorage.storage.service.StorageService;
@@ -13,29 +13,29 @@ import jrs.mystorage.user.service.UserService;
 import jrs.mystorage.utils.exception.NotFoundException;
 import jrs.mystorage.utils.mapper.StorageMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class StorageServiceImpl implements StorageService {
 
-    private final PagedResourcesAssembler<Storage> storagePagedResourcesAssembler;
     private final UserService userService;
     private final StorageRepository storageRepository;
-    private final EmployeeRepository employeeRepository;
     private final StorageMapper storageMapper;
     private final OwnerRepository ownerRepository;
 
     @Override
-    public PagedModel<StorageDto> getOwnerStorages(String ownerEmail, Pageable pageable) {
-        Page<Storage> storages = storageRepository.findAllByOwnerEmail(ownerEmail, pageable);
-        return storagePagedResourcesAssembler.toModel(storages, storageMapper::toDto);
+    public List<StorageViewDto> getOwnerStorages(String ownerEmail) {
+        List<Storage> storages = storageRepository.findAllByOwnerEmail(ownerEmail);
+
+        return storages
+                .stream()
+                .map(storageMapper::toViewDto)
+                .collect(Collectors.toList());
     }
 
     @Override

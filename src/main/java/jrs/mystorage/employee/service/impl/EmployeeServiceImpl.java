@@ -72,7 +72,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeMapper.toDto(employee);
     }
 
-    //TODO Refactor code
     @Override
     public EmployeeDto updateEmployee(String ownerEmail, UUID employeeId, UEmployeeDto updatedEmployee) {
         Employee employee = employeeRepository.findById(employeeId)
@@ -81,8 +80,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (updatedEmployee.getPassword().equals("")) {
             updatedEmployee.setPassword(employee.getPassword());
         }
-        System.out.println(updatedEmployee);
-        if ((employee.getStorage() == null && updatedEmployee.getStorageId() != null) || (updatedEmployee.getStorageId() != null && employee.getStorage().getStorageId() != updatedEmployee.getStorageId())) {
+
+        if ((employee.getStorage() == null || employee.getStorage().getStorageId() != updatedEmployee.getStorageId()) && updatedEmployee.getStorageId() != null) {
             Storage storage = storageRepository.findByStorageIdAndOwnerEmail(updatedEmployee.getStorageId(), ownerEmail)
                     .orElseThrow(NotFoundException::new);
             employee.setStorage(storage);
@@ -90,9 +89,8 @@ public class EmployeeServiceImpl implements EmployeeService {
             employee.setStorage(null);
         }
 
-
-        Employee employee1 = employeeMapper.updateEntity(updatedEmployee, employee);
-        employeeRepository.save(employee1);
+        employeeMapper.updateEntity(updatedEmployee, employee);
+        employeeRepository.save(employee);
         return employeeMapper.toDto(employee);
     }
 }

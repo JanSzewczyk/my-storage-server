@@ -93,4 +93,8 @@ public class Storage {
     @UpdateTimestamp
     @Column
     private Timestamp updatedAt;
+
+    public Integer getNumberOfEmployees() {
+        return employees.size();
+    }
 }

@@ -2,10 +2,9 @@ package jrs.mystorage.storage.constroller;
 
 import jrs.mystorage.storage.dto.CUStorageDto;
 import jrs.mystorage.storage.dto.StorageDto;
+import jrs.mystorage.storage.dto.StorageViewDto;
 import jrs.mystorage.storage.service.StorageService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -24,11 +24,10 @@ public class StorageController {
 
     @GetMapping
     @PreAuthorize(value = "hasAuthority('OWNER')")
-    public ResponseEntity<PagedModel<StorageDto>> getOwnerStorages(
-            final Principal principal,
-            Pageable pageable
+    public ResponseEntity<List<StorageViewDto>> getOwnerStorages(
+            final Principal principal
     ) {
-        PagedModel<StorageDto> ownerStorages = storageService.getOwnerStorages(principal.getName(), pageable);
+        List<StorageViewDto> ownerStorages = storageService.getOwnerStorages(principal.getName());
         return new ResponseEntity<>(ownerStorages, HttpStatus.OK);
     }
 

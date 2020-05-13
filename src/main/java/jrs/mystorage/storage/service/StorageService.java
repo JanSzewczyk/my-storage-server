@@ -2,14 +2,14 @@ package jrs.mystorage.storage.service;
 
 import jrs.mystorage.storage.dto.CUStorageDto;
 import jrs.mystorage.storage.dto.StorageDto;
-import org.springframework.data.domain.Pageable;
-import org.springframework.hateoas.PagedModel;
+import jrs.mystorage.storage.dto.StorageViewDto;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface StorageService {
 
-    PagedModel<StorageDto> getOwnerStorages(String ownerEmail, Pageable pageable);
+    List<StorageViewDto> getOwnerStorages(String ownerEmail);
 
     StorageDto getStorage(String userEmail, UUID storageId);
 
