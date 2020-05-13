@@ -1,5 +1,6 @@
 package jrs.mystorage.storage.model;
 
+import jrs.mystorage.action.model.Action;
 import jrs.mystorage.employee.model.Employee;
 import jrs.mystorage.entity.Item;
 import jrs.mystorage.owner.model.Owner;
@@ -85,6 +86,13 @@ public class Storage {
             cascade = CascadeType.ALL
     )
     private List<Item> items = new ArrayList<>();
+
+    @OneToMany(
+            mappedBy = "storage",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL
+    )
+    private List<Action> actions = new ArrayList<>();
 
     @CreationTimestamp
     @Column(updatable = false)

@@ -1,5 +1,6 @@
 package jrs.mystorage.entity;
 
+import jrs.mystorage.action.model.Action;
 import jrs.mystorage.storage.model.Storage;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -57,4 +58,16 @@ public class Item {
     )
     @JoinColumn(name = "storage_id")
     private Storage storage;
+
+    @ManyToOne(
+            fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.DETACH,
+                    CascadeType.MERGE,
+                    CascadeType.PERSIST,
+                    CascadeType.REFRESH
+            }
+    )
+    @JoinColumn(name = "action_id")
+    private Action action;
 }
