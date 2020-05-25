@@ -2,7 +2,7 @@ package jrs.mystorage.storage.model;
 
 import jrs.mystorage.action.model.Action;
 import jrs.mystorage.employee.model.Employee;
-import jrs.mystorage.entity.Item;
+import jrs.mystorage.item.model.Item;
 import jrs.mystorage.owner.model.Owner;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;

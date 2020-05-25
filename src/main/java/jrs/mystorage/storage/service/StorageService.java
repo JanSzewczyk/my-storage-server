@@ -1,5 +1,6 @@
 package jrs.mystorage.storage.service;
 
+import jrs.mystorage.item.model.Item;
 import jrs.mystorage.storage.dto.CUStorageDto;
 import jrs.mystorage.storage.dto.StorageDto;
 import jrs.mystorage.storage.dto.StorageViewDto;
@@ -18,4 +19,6 @@ public interface StorageService {
     StorageDto updateStorage(String ownerEmail, UUID storageId, CUStorageDto updatedStorage);
 
     StorageDto removeOwnerStorage(String ownerEmail, UUID storageId);
+
+    void storeItemsInStorage(UUID storageId, List<Item> items);
 }

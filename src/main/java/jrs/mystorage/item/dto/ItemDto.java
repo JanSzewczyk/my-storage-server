@@ -1,0 +1,17 @@
+package jrs.mystorage.item.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.UUID;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class ItemDto {
+
+    private UUID itemId;
+
+    private Integer amount;
+}

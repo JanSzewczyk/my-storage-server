@@ -1,7 +1,6 @@
 package jrs.mystorage.employee.model;
 
 import jrs.mystorage.action.model.Action;
-import jrs.mystorage.entity.Item;
 import jrs.mystorage.owner.model.Owner;
 import jrs.mystorage.storage.model.Storage;
 import lombok.*;

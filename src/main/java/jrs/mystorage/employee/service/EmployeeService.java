@@ -12,6 +12,8 @@ public interface EmployeeService {
 
     PagedModel<EmployeeDto> getEmployeesByOwnerEmail(String ownerEmail, Pageable pageable);
 
+    PagedModel<EmployeeDto> getEmployeesByStorage(String ownerEmail, UUID storageId, Pageable pageable);
+
     EmployeeDto getEmployees(String ownerEmail, UUID employeeId);
 
     EmployeeDto createEmployee(String ownerEmail, CEmployeeDto newEmployee);

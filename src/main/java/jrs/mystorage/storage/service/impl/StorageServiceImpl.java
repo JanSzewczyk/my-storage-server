@@ -1,6 +1,8 @@
 package jrs.mystorage.storage.service.impl;
 
 import jrs.mystorage.auth.model.Role;
+import jrs.mystorage.item.model.Item;
+import jrs.mystorage.item.repository.ItemRepository;
 import jrs.mystorage.owner.model.Owner;
 import jrs.mystorage.owner.repository.OwnerRepository;
 import jrs.mystorage.storage.dto.CUStorageDto;
@@ -16,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -27,6 +30,7 @@ public class StorageServiceImpl implements StorageService {
     private final StorageRepository storageRepository;
     private final StorageMapper storageMapper;
     private final OwnerRepository ownerRepository;
+    private final ItemRepository itemRepository;
 
     @Override
     public List<StorageViewDto> getOwnerStorages(String ownerEmail) {
@@ -80,4 +84,29 @@ public class StorageServiceImpl implements StorageService {
         storageRepository.delete(storage);
         return storageMapper.toDto(storage);
     }
+
+    @Override
+    public void storeItemsInStorage(UUID storageId, List<Item> items) {
+        Storage storage = storageRepository.findById(storageId)
+                .orElseThrow(NotFoundException::new);
+
+        items.forEach(item -> {
+            Optional<Item> findItem = itemRepository
+                    .findByStorageStorageIdAndProductProductId(storageId, item.getProduct().getProductId());
+            if (findItem.isPresent()){
+                Item updatingItem = findItem.get();
+                updatingItem.setAmount(updatingItem.getAmount() + item.getAmount());
+                itemRepository.save(updatingItem);
+            } else {
+                Item newItem = new Item();
+                newItem.setAmount(item.getAmount());
+                newItem.setProduct(item.getProduct());
+                newItem.setStorage(storage);
+                itemRepository.save(newItem);
+            }
+        });
+
+    }
+
+
 }

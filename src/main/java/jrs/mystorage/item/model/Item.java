@@ -1,6 +1,7 @@
-package jrs.mystorage.entity;
+package jrs.mystorage.item.model;
 
 import jrs.mystorage.action.model.Action;
+import jrs.mystorage.entity.Product;
 import jrs.mystorage.storage.model.Storage;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -30,10 +31,6 @@ public class Item {
     @Column
     @Min(1)
     private Integer amount;
-
-    @Column
-    @Min(0)
-    private Double valuePerItem;
 
     @ManyToOne(
             fetch = FetchType.LAZY,

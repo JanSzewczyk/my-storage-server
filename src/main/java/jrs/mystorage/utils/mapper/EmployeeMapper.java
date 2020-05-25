@@ -13,7 +13,7 @@ import javax.annotation.PostConstruct;
 
 @Component
 @RequiredArgsConstructor
-public class EmployeeMapper extends Mapper<Employee, EmployeeDto>  {
+public class EmployeeMapper extends Mapper<Employee, EmployeeDto> {
 
     private final ModelMapper mapper;
     private final PasswordEncoder passwordEncoder;

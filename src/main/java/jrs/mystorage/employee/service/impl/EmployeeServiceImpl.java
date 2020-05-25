@@ -51,9 +51,16 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeMapper.toDto(employee);
     }
 
+    // TODO create view
     @Override
     public PagedModel<EmployeeDto> getEmployeesByOwnerEmail(String ownerEmail, Pageable pageable) {
         Page<Employee> employees = employeeRepository.findAllByOwnerEmail(ownerEmail, pageable);
+        return employeePagedResourcesAssembler.toModel(employees, employeeMapper::toDto);
+    }
+
+    @Override
+    public PagedModel<EmployeeDto> getEmployeesByStorage(String ownerEmail, UUID storageId, Pageable pageable) {
+        Page<Employee> employees = employeeRepository.findAllByOwnerEmailAndStorageStorageId(ownerEmail, storageId, pageable);
         return employeePagedResourcesAssembler.toModel(employees, employeeMapper::toDto);
     }
 
