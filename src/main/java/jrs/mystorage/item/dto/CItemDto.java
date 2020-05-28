@@ -1,6 +1,6 @@
 package jrs.mystorage.item.dto;
 
-import jrs.mystorage.entity.CProductDto;
+import jrs.mystorage.product.dto.CProductDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

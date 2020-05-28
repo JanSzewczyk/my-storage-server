@@ -1,7 +1,7 @@
 package jrs.mystorage.item.model;
 
 import jrs.mystorage.action.model.Action;
-import jrs.mystorage.entity.Product;
+import jrs.mystorage.product.model.Product;
 import jrs.mystorage.storage.model.Storage;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;

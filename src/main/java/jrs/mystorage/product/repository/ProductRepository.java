@@ -1,5 +1,6 @@
-package jrs.mystorage.entity;
+package jrs.mystorage.product.repository;
 
+import jrs.mystorage.product.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

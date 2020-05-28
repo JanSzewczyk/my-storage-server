@@ -1,8 +1,8 @@
 package jrs.mystorage.utils.mapper;
 
-import jrs.mystorage.entity.CProductDto;
-import jrs.mystorage.entity.Product;
-import jrs.mystorage.entity.ProductDto;
+import jrs.mystorage.product.dto.CProductDto;
+import jrs.mystorage.product.model.Product;
+import jrs.mystorage.product.dto.ProductDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;

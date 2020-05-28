@@ -1,4 +1,4 @@
-package jrs.mystorage.entity;
+package jrs.mystorage.product.model;
 
 import jrs.mystorage.item.model.Item;
 import jrs.mystorage.owner.model.Owner;

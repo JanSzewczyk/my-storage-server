@@ -1,20 +1,21 @@
-package jrs.mystorage.entity;
+package jrs.mystorage.product.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Min;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CProductDto {
+public class ProductDto {
+
+    private UUID productId;
 
     private String name;
 
     private String description;
 
-    @Min(0)
     private Double value;
 }
