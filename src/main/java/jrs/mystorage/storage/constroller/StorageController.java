@@ -2,6 +2,7 @@ package jrs.mystorage.storage.constroller;
 
 import jrs.mystorage.storage.dto.CUStorageDto;
 import jrs.mystorage.storage.dto.StorageDto;
+import jrs.mystorage.storage.dto.StorageStatisticDto;
 import jrs.mystorage.storage.dto.StorageViewDto;
 import jrs.mystorage.storage.service.StorageService;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,16 @@ public class StorageController {
     ) {
         StorageDto storage = storageService.getStorage(principal.getName(), storageId);
         return new ResponseEntity<>(storage, HttpStatus.OK);
+    }
+
+    @GetMapping("/{storageId}/statistics")
+    @PreAuthorize(value = "hasAuthority('OWNER')")
+    public ResponseEntity<List<StorageStatisticDto>> getStorageStatistics(
+            final Principal principal,
+            @PathVariable UUID storageId
+    ) {
+        List<StorageStatisticDto> statistics = storageService.getStorageValueStatistics(principal.getName(), storageId);
+        return new ResponseEntity<>(statistics, HttpStatus.OK);
     }
 
     @PostMapping

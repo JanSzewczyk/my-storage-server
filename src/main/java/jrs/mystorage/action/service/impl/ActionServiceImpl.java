@@ -1,6 +1,7 @@
 package jrs.mystorage.action.service.impl;
 
-import jrs.mystorage.action.dto.ActionStorageViewDto;
+import jrs.mystorage.action.dto.ActionStorageDto;
+import jrs.mystorage.action.dto.RemoveActionItemDto;
 import jrs.mystorage.action.model.Action;
 import jrs.mystorage.action.model.ActionType;
 import jrs.mystorage.action.repository.ActionRepository;
@@ -35,7 +36,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ActionServiceImpl implements ActionService {
 
-    private final PagedResourcesAssembler<Action> actionPagedResourcesAssembler;
+    private final PagedResourcesAssembler<Item> itemPagedResourcesAssembler;
     private final ItemMapper itemMapper;
     private final ProductMapper productMapper;
     private final ActionMapper actionMapper;
@@ -89,10 +90,45 @@ public class ActionServiceImpl implements ActionService {
     }
 
     @Override
-    public PagedModel<ActionStorageViewDto> getAllStorageActions(String ownerEmail, UUID storageId, Pageable pageable) {
+    public PagedModel<ActionStorageDto> getAllStorageActions(String ownerEmail, UUID storageId, Pageable pageable) {
 
-        Page<Action> actions = actionRepository.findAllByStorageStorageIdAndStorageOwnerEmail(storageId, ownerEmail, pageable);
-        return actionPagedResourcesAssembler.toModel(actions, actionMapper::toActionStorageViewDto);
+        Page<Item> actions = itemRepository
+                .findAllByActionStorageStorageIdAndActionStorageOwnerEmailOrderByActionCreatedAtDesc(storageId, ownerEmail, pageable);
+        return itemPagedResourcesAssembler.toModel(actions, itemMapper::toActionStorageDto);
+    }
+
+    @Override
+    public void removeItemsFromStorage(String employeeEmail, ArrayList<RemoveActionItemDto> removedItems) {
+
+        Employee employee = employeeRepository.findByEmail(employeeEmail)
+                .orElseThrow(NotFoundException::new);
+
+        Storage storage = employee.getStorage();
+        if (storage == null) throw new NotFoundException();
+
+        Owner owner = employee.getOwner();
+        if (owner == null) throw new NotFoundException();
+
+        storageService.removeStorageItems(storage.getStorageId(), removedItems);
+
+        // towrzenie akcji
+        Action action = new Action();
+        action.setAction(ActionType.REMOVE);
+        action.setEmployee(employee);
+        action.setStorage(storage);
+        actionRepository.save(action);
+
+        List<Item> removeActionItems = removedItems.stream().map(item -> {
+            Item newItem = new Item();
+            Product product = productRepository.findById(item.getProductId())
+                    .orElseThrow(NotFoundException::new);
+            newItem.setAmount(item.getAmount());
+            newItem.setProduct(product);
+            newItem.setAction(action);
+            return newItem;
+        }).collect(Collectors.toList());
+
+        itemRepository.saveAll(removeActionItems);
     }
 
 }

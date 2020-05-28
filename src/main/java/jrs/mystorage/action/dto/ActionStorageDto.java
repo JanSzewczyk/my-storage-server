@@ -16,11 +16,17 @@ import java.util.UUID;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Relation(collectionRelation = "actions", itemRelation = "action")
-public class ActionStorageViewDto extends RepresentationModel<ActionStorageViewDto> {
+public class ActionStorageDto extends RepresentationModel<ActionStorageDto> {
 
     private UUID actionId;
     private ActionType action;
     private Timestamp createdAt;
+
+    private UUID itemId;
+    private String itemName;
+    private Integer itemAmount;
+    private Double itemValue;
+    private Double itemTotalValue;
 
     private UUID employeeId;
     private String employeeFirstName;

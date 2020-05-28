@@ -13,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@Relation(collectionRelation = "actions", itemRelation = "action")
+@Relation(collectionRelation = "items", itemRelation = "item")
 public class StorageItemDto extends RepresentationModel<StorageItemDto> {
 
     private UUID itemId;

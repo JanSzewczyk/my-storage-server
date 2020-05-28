@@ -1,6 +1,5 @@
 package jrs.mystorage.item.repository;
 
-import jrs.mystorage.employee.model.Employee;
 import jrs.mystorage.item.model.Item;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,4 +15,6 @@ public interface ItemRepository extends JpaRepository<Item, UUID> {
     Optional<Item> findByStorageStorageIdAndProductProductId(UUID storageId, UUID productId);
 
     Page<Item> findAllByStorageStorageIdAndStorageOwnerEmail(UUID storageId, String ownerEmail, Pageable pageable);
+
+    Page<Item> findAllByActionStorageStorageIdAndActionStorageOwnerEmailOrderByActionCreatedAtDesc(UUID storageId, String ownerEmail, Pageable pageable);
 }
