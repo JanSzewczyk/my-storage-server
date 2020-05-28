@@ -1,11 +1,13 @@
-package jrs.mystorage.entity;
+package jrs.mystorage.product.model;
 
+import jrs.mystorage.item.model.Item;
 import jrs.mystorage.owner.model.Owner;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import java.util.*;
 
 @Data
@@ -26,8 +28,12 @@ public class Product {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @Column
+    @Column(length = 4096)
     private String description;
+
+    @Column
+    @Min(0)
+    private Double value;
 
     @OneToMany(
             mappedBy = "product",

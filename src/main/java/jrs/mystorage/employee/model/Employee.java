@@ -1,5 +1,6 @@
 package jrs.mystorage.employee.model;
 
+import jrs.mystorage.action.model.Action;
 import jrs.mystorage.owner.model.Owner;
 import jrs.mystorage.storage.model.Storage;
 import lombok.*;
@@ -10,6 +11,8 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -55,28 +58,8 @@ public class Employee {
     @Length(min = 3)
     private String addressZip;
 
-    @Column()
+    @Column
     private String addressCountry;
-
-    @ManyToOne(
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH,
-                    CascadeType.MERGE,
-                    CascadeType.PERSIST,
-                    CascadeType.REFRESH}
-    )
-    @JoinColumn(name = "owner_id")
-    private Owner owner;
-
-    @ManyToOne(
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH,
-                    CascadeType.MERGE,
-                    CascadeType.PERSIST,
-                    CascadeType.REFRESH}
-    )
-    @JoinColumn(name = "storage_id")
-    private Storage storage;
 
     @CreationTimestamp
     @Column(updatable = false)
@@ -85,4 +68,40 @@ public class Employee {
     @UpdateTimestamp
     @Column
     private Timestamp updatedAt;
+
+    @OneToMany(
+            mappedBy = "employee",
+            fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.DETACH,
+                    CascadeType.MERGE,
+                    CascadeType.PERSIST,
+                    CascadeType.REFRESH
+            }
+    )
+    private List<Action> actions = new ArrayList<>();
+
+    @ManyToOne(
+            fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.DETACH,
+                    CascadeType.MERGE,
+                    CascadeType.PERSIST,
+                    CascadeType.REFRESH
+            }
+    )
+    @JoinColumn(name = "owner_id")
+    private Owner owner;
+
+    @ManyToOne(
+            fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.DETACH,
+                    CascadeType.MERGE,
+                    CascadeType.PERSIST,
+                    CascadeType.REFRESH
+            }
+    )
+    @JoinColumn(name = "storage_id")
+    private Storage storage;
 }

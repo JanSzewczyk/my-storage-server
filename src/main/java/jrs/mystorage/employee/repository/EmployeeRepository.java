@@ -14,6 +14,10 @@ import java.util.UUID;
 public interface EmployeeRepository extends JpaRepository<Employee, UUID> {
 
     Optional<Employee> findByEmail(String email);
+
     Optional<Employee> findByEmployeeIdAndOwnerEmail(UUID employeeId, String ownerEmail);
+
     Page<Employee> findAllByOwnerEmail(String ownerEmail, Pageable pageable);
+
+    Page<Employee> findAllByOwnerEmailAndStorageStorageId(String ownerEmail, UUID storageId, Pageable pageable);
 }

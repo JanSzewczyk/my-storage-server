@@ -35,6 +35,18 @@ public class EmployeeController {
         return new ResponseEntity<>(employeesByOwnerEmail, HttpStatus.OK);
     }
 
+    @GetMapping("/storage/{storageId}")
+    @PreAuthorize(value = "hasAuthority('OWNER')")
+    public ResponseEntity<PagedModel<EmployeeDto>> getEmployeesWorkingInStorage(
+            final Principal principal,
+            Pageable pageable,
+            @PathVariable UUID storageId) {
+        PagedModel<EmployeeDto> employeesByOwnerEmail = employeeService.getEmployeesByStorage(principal.getName(),storageId, pageable);
+        return new ResponseEntity<>(employeesByOwnerEmail, HttpStatus.OK);
+    }
+
+    // TODO get not assign employee
+
     @GetMapping("/{employeeId}")
     @PreAuthorize(value = "hasAuthority('OWNER')")
     public ResponseEntity<EmployeeDto> getEmployee(
@@ -45,6 +57,7 @@ public class EmployeeController {
         return new ResponseEntity<>(employee, HttpStatus.OK);
     }
 
+    // TODO default storage
     @PostMapping
     @PreAuthorize(value = "hasAuthority('OWNER')")
     public ResponseEntity<EmployeeDto> createNewEmployee(
@@ -58,10 +71,11 @@ public class EmployeeController {
     @PutMapping("/{employeeId}")
     @PreAuthorize(value = "hasAuthority('OWNER')")
     public ResponseEntity<EmployeeDto> updateEmployee(
+            final Principal principal,
             @PathVariable UUID employeeId,
             @RequestBody @Valid UEmployeeDto updatedEmployee
     ) {
-        EmployeeDto employee = employeeService.updateEmployee(employeeId, updatedEmployee);
+        EmployeeDto employee = employeeService.updateEmployee(principal.getName(), employeeId, updatedEmployee);
         return new ResponseEntity<>(employee, HttpStatus.OK);
     }
 
