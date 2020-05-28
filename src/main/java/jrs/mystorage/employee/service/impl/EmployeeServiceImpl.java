@@ -2,6 +2,7 @@ package jrs.mystorage.employee.service.impl;
 
 import jrs.mystorage.employee.dto.CEmployeeDto;
 import jrs.mystorage.employee.dto.EmployeeDto;
+import jrs.mystorage.employee.dto.EmployeeViewDto;
 import jrs.mystorage.employee.dto.UEmployeeDto;
 import jrs.mystorage.employee.model.Employee;
 import jrs.mystorage.employee.repository.EmployeeRepository;
@@ -51,17 +52,17 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeMapper.toDto(employee);
     }
 
-    // TODO create view
     @Override
-    public PagedModel<EmployeeDto> getEmployeesByOwnerEmail(String ownerEmail, Pageable pageable) {
+    public PagedModel<EmployeeViewDto> getEmployeesByOwnerEmail(String ownerEmail, Pageable pageable) {
         Page<Employee> employees = employeeRepository.findAllByOwnerEmail(ownerEmail, pageable);
-        return employeePagedResourcesAssembler.toModel(employees, employeeMapper::toDto);
+        return employeePagedResourcesAssembler.toModel(employees, employeeMapper::toViewDto);
     }
 
     @Override
-    public PagedModel<EmployeeDto> getEmployeesByStorage(String ownerEmail, UUID storageId, Pageable pageable) {
-        Page<Employee> employees = employeeRepository.findAllByOwnerEmailAndStorageStorageId(ownerEmail, storageId, pageable);
-        return employeePagedResourcesAssembler.toModel(employees, employeeMapper::toDto);
+    public PagedModel<EmployeeViewDto> getEmployeesByStorage(String ownerEmail, UUID storageId, Pageable pageable) {
+        Page<Employee> employees = employeeRepository
+                .findAllByOwnerEmailAndStorageStorageId(ownerEmail, storageId, pageable);
+        return employeePagedResourcesAssembler.toModel(employees, employeeMapper::toViewDto);
     }
 
     @Override

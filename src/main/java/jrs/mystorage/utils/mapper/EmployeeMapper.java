@@ -2,8 +2,10 @@ package jrs.mystorage.utils.mapper;
 
 import jrs.mystorage.employee.dto.CEmployeeDto;
 import jrs.mystorage.employee.dto.EmployeeDto;
+import jrs.mystorage.employee.dto.EmployeeViewDto;
 import jrs.mystorage.employee.dto.UEmployeeDto;
 import jrs.mystorage.employee.model.Employee;
+import jrs.mystorage.storage.model.Storage;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +19,7 @@ public class EmployeeMapper extends Mapper<Employee, EmployeeDto> {
 
     private final ModelMapper mapper;
     private final PasswordEncoder passwordEncoder;
+    private final StorageMapper storageMapper;
 
     @PostConstruct
     public void init() {
@@ -47,6 +50,23 @@ public class EmployeeMapper extends Mapper<Employee, EmployeeDto> {
 
     @Override
     public EmployeeDto toDto(Employee employee) {
-        return mapper.map(employee, EmployeeDto.class);
+        EmployeeDto map = mapper.map(employee, EmployeeDto.class);
+        Storage storage = employee.getStorage();
+        if (storage != null) {
+            map.setWorkPlace(storageMapper.toDto(storage));
+        }
+
+        return map;
+    }
+
+    public EmployeeViewDto toViewDto(Employee employee) {
+        EmployeeViewDto map = mapper.map(employee, EmployeeViewDto.class);
+        Storage storage = employee.getStorage();
+        if (storage != null) {
+            map.setStorageName(storage.getName());
+            map.setStorageId(storage.getStorageId());
+        }
+
+        return map;
     }
 }
