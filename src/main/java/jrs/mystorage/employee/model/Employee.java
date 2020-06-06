@@ -69,15 +69,11 @@ public class Employee {
     @Column
     private Timestamp updatedAt;
 
+    //TODO Change cascade Types
     @OneToMany(
             mappedBy = "employee",
             fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.DETACH,
-                    CascadeType.MERGE,
-                    CascadeType.PERSIST,
-                    CascadeType.REFRESH
-            }
+            cascade = CascadeType.ALL
     )
     private List<Action> actions = new ArrayList<>();
 

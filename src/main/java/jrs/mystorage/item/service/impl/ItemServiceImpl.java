@@ -12,7 +12,9 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,4 +32,11 @@ public class ItemServiceImpl implements ItemService {
 
         return itemPagedResourcesAssembler.toModel(items, itemMapper::toStorageDto);
     }
+
+    @Override
+    public List<StorageItemDto> getStorageItemsEmployee(String name, UUID storageId) {
+        List<Item> items = itemRepository.findAllByStorageStorageId(storageId);
+        return items.stream().map(itemMapper::toStorageDto).collect(Collectors.toList());
+    }
+
 }

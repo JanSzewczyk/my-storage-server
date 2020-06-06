@@ -5,8 +5,7 @@ import jrs.mystorage.utils.validator.annotation.PhoneNoValid;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class PhoneNoConstraintValidator  implements ConstraintValidator<PhoneNoValid, String> {
-
+public class PhoneNoConstraintValidator implements ConstraintValidator<PhoneNoValid, String> {
 
     public static final String PHONE_NUMBER_PATTERN = "^\\+([0-9]|-){5,}";
 

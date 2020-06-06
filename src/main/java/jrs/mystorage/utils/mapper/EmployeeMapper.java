@@ -52,6 +52,7 @@ public class EmployeeMapper extends Mapper<Employee, EmployeeDto> {
     public EmployeeDto toDto(Employee employee) {
         EmployeeDto map = mapper.map(employee, EmployeeDto.class);
         Storage storage = employee.getStorage();
+        map.setOwnerId(employee.getOwner().getOwnerId());
         if (storage != null) {
             map.setWorkPlace(storageMapper.toDto(storage));
         }

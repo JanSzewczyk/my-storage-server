@@ -32,6 +32,8 @@ public class EmployeeDto implements UserDto {
 
     private String addressCountry;
 
+    private UUID ownerId;
+
     private StorageDto workPlace;
 
     private Timestamp createdAt;

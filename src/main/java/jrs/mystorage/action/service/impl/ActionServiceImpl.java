@@ -130,5 +130,4 @@ public class ActionServiceImpl implements ActionService {
 
         itemRepository.saveAll(removeActionItems);
     }
-
 }
