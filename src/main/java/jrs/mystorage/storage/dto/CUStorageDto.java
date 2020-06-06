@@ -15,7 +15,7 @@ public class CUStorageDto {
     @Length(min = 3, max = 255)
     private String name;
 
-    @Min(0)
+    @Min(1)
     private Double surface;
 
     @Length(min = 3)

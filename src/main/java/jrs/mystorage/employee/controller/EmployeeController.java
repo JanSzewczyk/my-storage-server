@@ -2,6 +2,7 @@ package jrs.mystorage.employee.controller;
 
 import jrs.mystorage.employee.dto.CEmployeeDto;
 import jrs.mystorage.employee.dto.EmployeeDto;
+import jrs.mystorage.employee.dto.EmployeeViewDto;
 import jrs.mystorage.employee.dto.UEmployeeDto;
 import jrs.mystorage.employee.service.EmployeeService;
 
@@ -27,21 +28,21 @@ public class EmployeeController {
 
     @GetMapping
     @PreAuthorize(value = "hasAuthority('OWNER')")
-    public ResponseEntity<PagedModel<EmployeeDto>> getEmployees(
+    public ResponseEntity<PagedModel<EmployeeViewDto>> getEmployees(
             final Principal principal,
             Pageable pageable
     ) {
-        PagedModel<EmployeeDto> employeesByOwnerEmail = employeeService.getEmployeesByOwnerEmail(principal.getName(), pageable);
+        PagedModel<EmployeeViewDto> employeesByOwnerEmail = employeeService.getEmployeesByOwnerEmail(principal.getName(), pageable);
         return new ResponseEntity<>(employeesByOwnerEmail, HttpStatus.OK);
     }
 
     @GetMapping("/storage/{storageId}")
     @PreAuthorize(value = "hasAuthority('OWNER')")
-    public ResponseEntity<PagedModel<EmployeeDto>> getEmployeesWorkingInStorage(
+    public ResponseEntity<PagedModel<EmployeeViewDto>> getEmployeesWorkingInStorage(
             final Principal principal,
             Pageable pageable,
             @PathVariable UUID storageId) {
-        PagedModel<EmployeeDto> employeesByOwnerEmail = employeeService.getEmployeesByStorage(principal.getName(),storageId, pageable);
+        PagedModel<EmployeeViewDto> employeesByOwnerEmail = employeeService.getEmployeesByStorage(principal.getName(),storageId, pageable);
         return new ResponseEntity<>(employeesByOwnerEmail, HttpStatus.OK);
     }
 

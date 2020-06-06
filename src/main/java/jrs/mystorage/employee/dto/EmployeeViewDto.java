@@ -1,5 +1,6 @@
-package jrs.mystorage.storage.dto;
+package jrs.mystorage.employee.dto;
 
+import jrs.mystorage.storage.dto.StorageDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,15 +14,22 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class StorageDto {
+@EqualsAndHashCode(callSuper = true)
+@Relation(collectionRelation = "employees", itemRelation = "employee")
+public class EmployeeViewDto extends RepresentationModel<EmployeeViewDto> {
 
-    private UUID storageId;
-    private String name;
-    private Double surface;
+    private UUID employeeId;
+    private String email;
+    private String firstName;
+    private String lastName;
+    private String phone;
     private String addressStreet;
     private String addressCity;
     private String addressZip;
     private String addressCountry;
+
+    private UUID storageId;
+    private String storageName;
 
     private Timestamp createdAt;
     private Timestamp updatedAt;

@@ -21,6 +21,7 @@ public class ActionStorageDto extends RepresentationModel<ActionStorageDto> {
     private UUID actionId;
     private ActionType action;
     private Timestamp createdAt;
+    private Timestamp updatedAt;
 
     private UUID itemId;
     private String itemName;
