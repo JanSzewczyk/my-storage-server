@@ -52,7 +52,7 @@ security:
     scope-read: read
     scope-write: write
     resource-ids: mystorageresourceids
-    access-token-validity: 36000000 #1h
+    access-token-validity: 3600 #1h
     refresh-token-validity: 43200 #12h
 
 management:
