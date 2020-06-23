@@ -37,6 +37,8 @@ public class ActionController {
         return new ResponseEntity<>(allStorageActions, HttpStatus.OK);
     }
 
+    // TODO return action dto
+
     @PostMapping("/store")
     @PreAuthorize(value = "hasAuthority('EMPLOYEE')")
     public ResponseEntity<EmployeeDto> storeItemsAction(
