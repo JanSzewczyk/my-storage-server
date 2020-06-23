@@ -16,10 +16,10 @@ import jrs.mystorage.item.repository.ItemRepository;
 import jrs.mystorage.owner.model.Owner;
 import jrs.mystorage.storage.model.Storage;
 import jrs.mystorage.storage.service.StorageService;
-import jrs.mystorage.utils.exception.NotFoundException;
-import jrs.mystorage.utils.mapper.ActionMapper;
-import jrs.mystorage.utils.mapper.ItemMapper;
-import jrs.mystorage.utils.mapper.ProductMapper;
+import jrs.mystorage.util.exception.NotFoundException;
+import jrs.mystorage.util.mapper.ActionMapper;
+import jrs.mystorage.util.mapper.ItemMapper;
+import jrs.mystorage.util.mapper.ProductMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -86,14 +86,14 @@ public class ActionServiceImpl implements ActionService {
 
         itemRepository.saveAll(collect);
 
-        storageService.storeItemsInStorage(storage.getStorageId(), collect);
+        storageService.storeItemsInStorage(storage.getId(), collect);
     }
 
     @Override
     public PagedModel<ActionStorageDto> getAllStorageActions(String ownerEmail, UUID storageId, Pageable pageable) {
 
         Page<Item> actions = itemRepository
-                .findAllByActionStorageStorageIdAndActionStorageOwnerEmailOrderByActionCreatedAtDesc(storageId, ownerEmail, pageable);
+                .findAllByActionStorageIdAndActionStorageOwnerEmailOrderByActionCreatedAtDesc(storageId, ownerEmail, pageable);
         return itemPagedResourcesAssembler.toModel(actions, itemMapper::toActionStorageDto);
     }
 
@@ -109,7 +109,7 @@ public class ActionServiceImpl implements ActionService {
         Owner owner = employee.getOwner();
         if (owner == null) throw new NotFoundException();
 
-        storageService.removeStorageItems(storage.getStorageId(), removedItems);
+        storageService.removeStorageItems(storage.getId(), removedItems);
 
         // towrzenie akcji
         Action action = new Action();

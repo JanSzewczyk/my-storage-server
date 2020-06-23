@@ -16,9 +16,9 @@ import jrs.mystorage.storage.model.Storage;
 import jrs.mystorage.storage.repository.StorageRepository;
 import jrs.mystorage.storage.service.StorageService;
 import jrs.mystorage.user.service.UserService;
-import jrs.mystorage.utils.exception.ConflictException;
-import jrs.mystorage.utils.exception.NotFoundException;
-import jrs.mystorage.utils.mapper.StorageMapper;
+import jrs.mystorage.util.exception.ConflictException;
+import jrs.mystorage.util.exception.NotFoundException;
+import jrs.mystorage.util.mapper.StorageMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -75,7 +75,7 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     public StorageDto updateStorage(String ownerEmail, UUID storageId, CUStorageDto updatedStorage) {
-        Storage storage = storageRepository.findByStorageIdAndOwnerEmail(storageId, ownerEmail)
+        Storage storage = storageRepository.findByIdAndOwnerEmail(storageId, ownerEmail)
                 .orElseThrow(NotFoundException::new);
 
         storage = storageMapper.updateEntity(updatedStorage, storage);
@@ -85,7 +85,7 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     public StorageDto removeOwnerStorage(String ownerEmail, UUID storageId) {
-        Storage storage = storageRepository.findByStorageIdAndOwnerEmail(storageId, ownerEmail)
+        Storage storage = storageRepository.findByIdAndOwnerEmail(storageId, ownerEmail)
                 .orElseThrow(NotFoundException::new);
 
         storageRepository.delete(storage);
@@ -99,7 +99,7 @@ public class StorageServiceImpl implements StorageService {
 
         items.forEach(item -> {
             Optional<Item> findItem = itemRepository
-                    .findByStorageStorageIdAndProductProductId(storageId, item.getProduct().getProductId());
+                    .findByStorageIdAndProductId(storageId, item.getProduct().getId());
             if (findItem.isPresent()){
                 Item updatingItem = findItem.get();
                 updatingItem.setAmount(updatingItem.getAmount() + item.getAmount());
@@ -120,7 +120,7 @@ public class StorageServiceImpl implements StorageService {
         List<Item> updatedItems = new ArrayList<>();
 
         removedItems.forEach(item -> {
-            Item updatingItem = itemRepository.findByStorageStorageIdAndProductProductId(storageId, item.getProductId())
+            Item updatingItem = itemRepository.findByStorageIdAndProductId(storageId, item.getProductId())
                     .orElseThrow(NotFoundException::new);
             if (updatingItem.getAmount() > item.getAmount()){
                 updatingItem.setAmount(updatingItem.getAmount() - item.getAmount());
@@ -139,7 +139,7 @@ public class StorageServiceImpl implements StorageService {
     public List<StorageStatisticDto> getStorageValueStatistics(String ownerEmail, UUID storageId) {
         List<StorageStatisticDto> statistics = new ArrayList<>();
 
-        Storage storage = storageRepository.findByStorageIdAndOwnerEmail(storageId, ownerEmail)
+        Storage storage = storageRepository.findByIdAndOwnerEmail(storageId, ownerEmail)
                 .orElseThrow(NotFoundException::new);
 
         List<Action> actions = storage.getActions();

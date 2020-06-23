@@ -1,6 +1,6 @@
 package jrs.mystorage.employee.dto;
 
-import jrs.mystorage.utils.validator.annotation.*;
+import jrs.mystorage.util.validator.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

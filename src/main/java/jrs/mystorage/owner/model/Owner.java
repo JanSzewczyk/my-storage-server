@@ -29,7 +29,7 @@ public class Owner {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(insertable = false, updatable = false)
-    private UUID ownerId;
+    private UUID id;
 
     @Column(updatable = false, nullable = false, unique = true)
     private String email;

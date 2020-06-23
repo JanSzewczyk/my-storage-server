@@ -1,9 +1,11 @@
 package jrs.mystorage.item.controller;
 
 import jrs.mystorage.item.dto.StorageItemDto;
+import jrs.mystorage.item.model.StorageItemView;
 import jrs.mystorage.item.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,12 +28,12 @@ public class ItemController {
 
     @GetMapping("/storage/{storageId}")
     @PreAuthorize(value = "hasAuthority('OWNER')")
-    public ResponseEntity<PagedModel<StorageItemDto>> getStorageItems(
+    public ResponseEntity<PagedModel<EntityModel<StorageItemView>>> getStorageItemsView(
             final Principal principal,
             @PathVariable UUID storageId,
             Pageable pageable
     ) {
-        PagedModel<StorageItemDto> storageItems = itemService.getStorageItems(principal.getName(), storageId, pageable);
+        PagedModel<EntityModel<StorageItemView>> storageItems = itemService.getStorageItemsView(principal.getName(), storageId, pageable);
         return new ResponseEntity<>(storageItems, HttpStatus.OK);
     }
 

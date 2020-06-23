@@ -31,7 +31,7 @@ public class Storage {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(insertable = false, updatable = false)
-    private UUID storageId;
+    private UUID id;
 
     @Column(nullable = false)
     @Length(min = 3, max = 255)

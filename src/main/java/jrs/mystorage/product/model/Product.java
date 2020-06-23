@@ -23,7 +23,7 @@ public class Product {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(insertable = false, updatable = false)
-    private UUID productId;
+    private UUID id;
 
     @Column(nullable = false, unique = true)
     private String name;

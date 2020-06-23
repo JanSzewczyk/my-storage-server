@@ -17,7 +17,7 @@ spring:
       ddl-auto: create
   datasource:
     initialization-mode: always
-    data: classpath:sql_data/owner.sql, classpath:sql_data/storage.sql, classpath:sql_data/employee.sql, classpath:sql_data/product.sql, classpath:sql_data/action.sql, classpath:sql_data/item.sql
+    data: classpath:sql_data/owner.sql, classpath:sql_data/storage.sql, classpath:sql_data/employee.sql, classpath:sql_data/product.sql, classpath:sql_data/action.sql, classpath:sql_data/item.sql, classpath:sql_data/views.sql
     platform: postgres
     url: jdbc:postgresql://localhost:5432/my-storage
     username: jrs

@@ -14,11 +14,11 @@ import java.util.UUID;
 @Repository
 public interface ItemRepository extends JpaRepository<Item, UUID> {
 
-    Optional<Item> findByStorageStorageIdAndProductProductId(UUID storageId, UUID productId);
+    Optional<Item> findByStorageIdAndProductId(UUID storageId, UUID productId);
 
-    Page<Item> findAllByStorageStorageIdAndStorageOwnerEmail(UUID storageId, String ownerEmail, Pageable pageable);
+    Page<Item> findAllByStorageIdAndStorageOwnerEmail(UUID storageId, String ownerEmail, Pageable pageable);
 
-    Page<Item> findAllByActionStorageStorageIdAndActionStorageOwnerEmailOrderByActionCreatedAtDesc(UUID storageId, String ownerEmail, Pageable pageable);
+    Page<Item> findAllByActionStorageIdAndActionStorageOwnerEmailOrderByActionCreatedAtDesc(UUID storageId, String ownerEmail, Pageable pageable);
 
-    List<Item> findAllByStorageStorageId(UUID storageId);
+    List<Item> findAllByStorageId(UUID storageId);
 }

@@ -5,8 +5,8 @@ import jrs.mystorage.owner.dto.UOwnerDto;
 import jrs.mystorage.owner.model.Owner;
 import jrs.mystorage.owner.repository.OwnerRepository;
 import jrs.mystorage.owner.service.OwnerService;
-import jrs.mystorage.utils.exception.NotFoundException;
-import jrs.mystorage.utils.mapper.OwnerMapper;
+import jrs.mystorage.util.exception.NotFoundException;
+import jrs.mystorage.util.mapper.OwnerMapper;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;

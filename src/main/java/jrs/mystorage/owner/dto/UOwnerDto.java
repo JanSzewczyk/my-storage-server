@@ -1,9 +1,7 @@
 package jrs.mystorage.owner.dto;
 
-import jrs.mystorage.utils.validator.annotation.EmailValid;
-import jrs.mystorage.utils.validator.annotation.PasswordOrEmptyValid;
-import jrs.mystorage.utils.validator.annotation.PasswordValid;
-import jrs.mystorage.utils.validator.annotation.PhoneNoValid;
+import jrs.mystorage.util.validator.annotation.PasswordOrEmptyValid;
+import jrs.mystorage.util.validator.annotation.PhoneNoValid;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

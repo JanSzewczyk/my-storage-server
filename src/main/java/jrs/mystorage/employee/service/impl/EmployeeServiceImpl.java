@@ -11,8 +11,8 @@ import jrs.mystorage.owner.model.Owner;
 import jrs.mystorage.owner.repository.OwnerRepository;
 import jrs.mystorage.storage.model.Storage;
 import jrs.mystorage.storage.repository.StorageRepository;
-import jrs.mystorage.utils.exception.NotFoundException;
-import jrs.mystorage.utils.mapper.EmployeeMapper;
+import jrs.mystorage.util.exception.NotFoundException;
+import jrs.mystorage.util.mapper.EmployeeMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 
@@ -42,7 +42,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setOwner(owner);
 
         if (newEmployee.getStorageId() != null) {
-            Storage storage = storageRepository.findByStorageIdAndOwnerEmail(newEmployee.getStorageId(), ownerEmail)
+            Storage storage = storageRepository.findByIdAndOwnerEmail(newEmployee.getStorageId(), ownerEmail)
                     .orElseThrow(NotFoundException::new);
 
             employee.setStorage(storage);
@@ -61,20 +61,20 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public PagedModel<EmployeeViewDto> getEmployeesByStorage(String ownerEmail, UUID storageId, Pageable pageable) {
         Page<Employee> employees = employeeRepository
-                .findAllByOwnerEmailAndStorageStorageId(ownerEmail, storageId, pageable);
+                .findAllByOwnerEmailAndStorageId(ownerEmail, storageId, pageable);
         return employeePagedResourcesAssembler.toModel(employees, employeeMapper::toViewDto);
     }
 
     @Override
     public EmployeeDto getEmployees(String ownerEmail, UUID employeeId) {
-        Employee employee = employeeRepository.findByEmployeeIdAndOwnerEmail(employeeId, ownerEmail)
+        Employee employee = employeeRepository.findByIdAndOwnerEmail(employeeId, ownerEmail)
                 .orElseThrow(NotFoundException::new);
         return employeeMapper.toDto(employee);
     }
 
     @Override
     public EmployeeDto removeEmployee(String ownerEmail, UUID employeeId) {
-        Employee employee = employeeRepository.findByEmployeeIdAndOwnerEmail(employeeId, ownerEmail)
+        Employee employee = employeeRepository.findByIdAndOwnerEmail(employeeId, ownerEmail)
                 .orElseThrow(NotFoundException::new);
         employeeRepository.delete(employee);
         return employeeMapper.toDto(employee);
@@ -89,8 +89,8 @@ public class EmployeeServiceImpl implements EmployeeService {
             updatedEmployee.setPassword(employee.getPassword());
         }
 
-        if ((employee.getStorage() == null || employee.getStorage().getStorageId() != updatedEmployee.getStorageId()) && updatedEmployee.getStorageId() != null) {
-            Storage storage = storageRepository.findByStorageIdAndOwnerEmail(updatedEmployee.getStorageId(), ownerEmail)
+        if ((employee.getStorage() == null || employee.getStorage().getId() != updatedEmployee.getStorageId()) && updatedEmployee.getStorageId() != null) {
+            Storage storage = storageRepository.findByIdAndOwnerEmail(updatedEmployee.getStorageId(), ownerEmail)
                     .orElseThrow(NotFoundException::new);
             employee.setStorage(storage);
         } else if (updatedEmployee.getStorageId() == null ) {

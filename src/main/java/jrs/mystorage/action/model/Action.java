@@ -30,7 +30,7 @@ public class Action {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(insertable = false, updatable = false)
-    private UUID actionId;
+    private UUID id;
 
     @Column(nullable = false)
     private ActionType action;

@@ -26,7 +26,7 @@ public class Item {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(insertable = false, updatable = false)
-    private UUID itemId;
+    private UUID id;
 
     @Column
     @Min(1)
