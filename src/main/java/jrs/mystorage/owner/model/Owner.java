@@ -47,6 +47,9 @@ public class Owner {
     @Column(length = 32, unique = true)
     private String phone;
 
+    @Column(nullable = false)
+    private Currency currency;
+
     @OneToMany(
             mappedBy = "owner",
             fetch = FetchType.LAZY,

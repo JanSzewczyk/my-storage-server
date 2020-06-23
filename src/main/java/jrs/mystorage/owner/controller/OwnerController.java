@@ -21,7 +21,7 @@ public class OwnerController {
 
     @PutMapping
     @PreAuthorize(value = "hasAuthority('OWNER')")
-    public ResponseEntity<OwnerDto> updateEmployee(
+    public ResponseEntity<OwnerDto> updateOwner(
             final Principal principal,
             @RequestBody @Valid UOwnerDto updatedOwner
     ) {

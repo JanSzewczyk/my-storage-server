@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import java.util.Currency;
 
 @Data
 @AllArgsConstructor
@@ -24,4 +25,7 @@ public class UOwnerDto {
 
     @PhoneNoValid
     private String phone;
+
+    @NotNull
+    private Currency currency;
 }

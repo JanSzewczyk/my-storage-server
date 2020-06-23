@@ -9,6 +9,7 @@ import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
 import java.sql.Timestamp;
+import java.util.Currency;
 import java.util.UUID;
 
 @Data
@@ -23,6 +24,7 @@ public class OwnerDto extends RepresentationModel<OwnerDto> implements UserDto {
     private String firstName;
     private String lastName;
     private String phone;
+    private Currency currency;
     private Timestamp createdAt;
     private Timestamp updatedAt;
 }
