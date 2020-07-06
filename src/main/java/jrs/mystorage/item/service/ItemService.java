@@ -1,6 +1,6 @@
 package jrs.mystorage.item.service;
 
-import jrs.mystorage.item.dto.StorageItemDto;
+import jrs.mystorage.item.dto.ItemDto;
 import jrs.mystorage.item.model.StorageItemView;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.EntityModel;
@@ -11,9 +11,9 @@ import java.util.UUID;
 
 public interface ItemService {
 
-    PagedModel<StorageItemDto> getStorageItems(String ownerEmail, UUID storageId, Pageable pageable);
+    PagedModel<ItemDto> getStorageItems(String ownerEmail, UUID storageId, Pageable pageable);
 
-    List<StorageItemDto> getStorageItemsEmployee(String name, UUID storageId);
+    List<ItemDto> getStorageItemsEmployee(String name, UUID storageId);
 
     PagedModel<EntityModel<StorageItemView>> getStorageItemsView(String name, UUID storageId, Pageable pageable);
 }

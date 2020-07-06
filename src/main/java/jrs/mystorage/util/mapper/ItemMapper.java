@@ -3,7 +3,6 @@ package jrs.mystorage.util.mapper;
 import jrs.mystorage.action.dto.ActionStorageDto;
 import jrs.mystorage.item.dto.CItemDto;
 import jrs.mystorage.item.dto.ItemDto;
-import jrs.mystorage.item.dto.StorageItemDto;
 import jrs.mystorage.item.model.Item;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -20,11 +19,12 @@ public class ItemMapper  extends Mapper<Item, ItemDto> {
     @PostConstruct
     public void init() {
 
-        mapper.createTypeMap(Item.class, StorageItemDto.class)
+        mapper.createTypeMap(Item.class, ItemDto.class)
                 .addMappings(m ->{
-                    m.map(s -> s.getProduct().getId(), StorageItemDto::setProductId);
-                    m.map(s -> s.getProduct().getName(), StorageItemDto::setProductName);
-                    m.map(s -> s.getProduct().getValue(), StorageItemDto::setProductValue);
+                    m.map(s -> s.getProduct().getId(), ItemDto::setProductId);
+                    m.map(s -> s.getProduct().getName(), ItemDto::setProductName);
+                    m.map(s -> s.getProduct().getValue(), ItemDto::setProductValue);
+                    m.map(s -> s.getAction().getStorage().getOwner().getCurrency(), ItemDto::setCurrency);
                 });
 
         mapper.createTypeMap(Item.class, ActionStorageDto.class)
@@ -55,11 +55,7 @@ public class ItemMapper  extends Mapper<Item, ItemDto> {
 
     @Override
     public ItemDto toDto(Item item) {
-        return mapper.map(item, ItemDto.class);
-    }
-
-    public StorageItemDto toStorageDto(Item item) {
-        StorageItemDto mappedItem = mapper.map(item, StorageItemDto.class);
+        ItemDto mappedItem = mapper.map(item, ItemDto.class);
         mappedItem.setTotalValue(item.getAmount() * item.getProduct().getValue());
         return mappedItem;
     }

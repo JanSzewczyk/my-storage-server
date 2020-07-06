@@ -12,5 +12,5 @@ import java.util.UUID;
 @Repository
 public interface ActionRepository extends JpaRepository<Action, UUID> {
 
-    Page<Action> findAllByStorageIdAndStorageOwnerEmail(UUID storageId, String ownerEmail, Pageable pageable );
+    Page<Action> findAllByStorageIdAndStorageOwnerEmail(Pageable pageable, UUID storageId, String ownerEmail);
 }
