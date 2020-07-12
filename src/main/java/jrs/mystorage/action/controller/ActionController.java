@@ -1,5 +1,6 @@
 package jrs.mystorage.action.controller;
 
+import jrs.mystorage.action.dto.ActionDto;
 import jrs.mystorage.action.dto.ActionStorageDto;
 import jrs.mystorage.action.dto.RemoveActionItemDto;
 import jrs.mystorage.action.service.ActionService;
@@ -26,30 +27,32 @@ public class ActionController {
 
     private final ActionService actionService;
 
-    @GetMapping("storage/{storageId}")
+    @GetMapping("/storage/{storageId}")
     @PreAuthorize(value = "hasAuthority('OWNER')")
-    public ResponseEntity<PagedModel<ActionStorageDto>> getStorageActions(
+    public ResponseEntity<PagedModel<ActionDto>> getStorageActions(
             final Principal principal,
             Pageable pageable,
             @PathVariable UUID storageId
     ) {
-        PagedModel<ActionStorageDto> allStorageActions = actionService.getAllStorageActions(principal.getName(), storageId, pageable);
+        PagedModel<ActionDto> allStorageActions = actionService.getAllStorageActions(principal.getName(), storageId, pageable);
         return new ResponseEntity<>(allStorageActions, HttpStatus.OK);
     }
 
+    // TODO return action dto
     @PostMapping("/store")
     @PreAuthorize(value = "hasAuthority('EMPLOYEE')")
-    public ResponseEntity<EmployeeDto> storeItemsAction(
+    public ResponseEntity<Void> storeItemsAction(
             final Principal principal,
             @RequestBody ArrayList<CItemDto> newItems
     ) {
         actionService.storeItemsInStorage(principal.getName(), newItems);
-        return new ResponseEntity<>(null, HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    // TODO return action dto
     @PostMapping("/remove")
     @PreAuthorize(value = "hasAuthority('EMPLOYEE')")
-    public ResponseEntity<EmployeeDto> removeItemsAction(
+    public ResponseEntity<Void> removeItemsAction(
             final Principal principal,
             @RequestBody @Valid ArrayList<RemoveActionItemDto> removedItems
     ) {

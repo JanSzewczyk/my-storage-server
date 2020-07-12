@@ -23,10 +23,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -142,6 +139,7 @@ public class StorageServiceImpl implements StorageService {
         Storage storage = storageRepository.findByIdAndOwnerEmail(storageId, ownerEmail)
                 .orElseThrow(NotFoundException::new);
 
+        Currency currency = storage.getOwner().getCurrency();
         List<Action> actions = storage.getActions();
 
         LocalDate startDate = storage.getCreatedAt().toLocalDateTime().toLocalDate();
@@ -155,6 +153,7 @@ public class StorageServiceImpl implements StorageService {
 
             StorageStatisticDto values = new StorageStatisticDto();
             values.setDate(finalDate);
+            values.setCurrency(currency);
 
             List<Action> dailyActions = actions
                     .stream()

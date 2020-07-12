@@ -36,7 +36,7 @@ public class AuthServerConfiguration extends AuthorizationServerConfigurerAdapte
     private String scopeRead;
 
     @Value("${security.jwt.scope-write}")
-    private String scopeWrite = "write";
+    private final String scopeWrite = "write";
 
     @Value("${security.jwt.resource-ids}")
     private String resourceIds;

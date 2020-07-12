@@ -39,10 +39,6 @@ public class Action {
     @Column(updatable = false)
     private Timestamp createdAt;
 
-    @UpdateTimestamp
-    @Column
-    private Timestamp updatedAt;
-
     @OneToMany(
             mappedBy = "action",
             fetch = FetchType.LAZY,

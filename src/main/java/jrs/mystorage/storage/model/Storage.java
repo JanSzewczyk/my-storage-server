@@ -105,4 +105,9 @@ public class Storage {
     public Integer getNumberOfEmployees() {
         return employees.size();
     }
+
+    @PreRemove
+    void preRemove() {
+        employees.forEach(e -> e.setStorage(null));
+    }
 }

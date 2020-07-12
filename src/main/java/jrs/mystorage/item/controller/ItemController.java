@@ -1,6 +1,6 @@
 package jrs.mystorage.item.controller;
 
-import jrs.mystorage.item.dto.StorageItemDto;
+import jrs.mystorage.item.dto.ItemDto;
 import jrs.mystorage.item.model.StorageItemView;
 import jrs.mystorage.item.service.ItemService;
 import lombok.RequiredArgsConstructor;
@@ -39,11 +39,11 @@ public class ItemController {
 
     @GetMapping("/list/{storageId}")
     @PreAuthorize(value = "hasAuthority('EMPLOYEE')")
-    public ResponseEntity<List<StorageItemDto>> getStorageItems(
+    public ResponseEntity<List<ItemDto>> getStorageItems(
             final Principal principal,
             @PathVariable UUID storageId
     ) {
-        List<StorageItemDto> storageItems = itemService.getStorageItemsEmployee(principal.getName(), storageId);
+        List<ItemDto> storageItems = itemService.getStorageItemsEmployee(principal.getName(), storageId);
         return new ResponseEntity<>(storageItems, HttpStatus.OK);
     }
 }

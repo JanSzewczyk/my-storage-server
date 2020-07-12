@@ -1,6 +1,6 @@
 package jrs.mystorage.item.service.impl;
 
-import jrs.mystorage.item.dto.StorageItemDto;
+import jrs.mystorage.item.dto.ItemDto;
 import jrs.mystorage.item.model.Item;
 import jrs.mystorage.item.model.StorageItemView;
 import jrs.mystorage.item.repository.ItemRepository;
@@ -35,17 +35,17 @@ public class ItemServiceImpl implements ItemService {
 
 
     @Override
-    public PagedModel<StorageItemDto> getStorageItems(String ownerEmail, UUID storageId, Pageable pageable) {
+    public PagedModel<ItemDto> getStorageItems(String ownerEmail, UUID storageId, Pageable pageable) {
         Page<Item> items = itemRepository
                 .findAllByStorageIdAndStorageOwnerEmail(storageId, ownerEmail, pageable);
 
-        return itemPagedResourcesAssembler.toModel(items, itemMapper::toStorageDto);
+        return itemPagedResourcesAssembler.toModel(items, itemMapper::toDto);
     }
 
     @Override
-    public List<StorageItemDto> getStorageItemsEmployee(String name, UUID storageId) {
+    public List<ItemDto> getStorageItemsEmployee(String name, UUID storageId) {
         List<Item> items = itemRepository.findAllByStorageId(storageId);
-        return items.stream().map(itemMapper::toStorageDto).collect(Collectors.toList());
+        return items.stream().map(itemMapper::toDto).collect(Collectors.toList());
     }
 
     @Override

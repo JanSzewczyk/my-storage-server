@@ -1,6 +1,5 @@
 package jrs.mystorage.product.controller;
 
-import jrs.mystorage.item.dto.StorageItemDto;
 import jrs.mystorage.product.dto.ProductDto;
 import jrs.mystorage.product.service.ProductService;
 import lombok.RequiredArgsConstructor;

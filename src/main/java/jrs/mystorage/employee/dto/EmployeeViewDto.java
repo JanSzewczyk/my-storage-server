@@ -18,7 +18,7 @@ import java.util.UUID;
 @Relation(collectionRelation = "employees", itemRelation = "employee")
 public class EmployeeViewDto extends RepresentationModel<EmployeeViewDto> {
 
-    private UUID employeeId;
+    private UUID id;
     private String email;
     private String firstName;
     private String lastName;

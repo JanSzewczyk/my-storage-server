@@ -1,5 +1,6 @@
 package jrs.mystorage.action.service.impl;
 
+import jrs.mystorage.action.dto.ActionDto;
 import jrs.mystorage.action.dto.ActionStorageDto;
 import jrs.mystorage.action.dto.RemoveActionItemDto;
 import jrs.mystorage.action.model.Action;
@@ -36,7 +37,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ActionServiceImpl implements ActionService {
 
-    private final PagedResourcesAssembler<Item> itemPagedResourcesAssembler;
+    private final PagedResourcesAssembler<Action> actionPagedResourcesAssembler;
     private final ItemMapper itemMapper;
     private final ProductMapper productMapper;
     private final ActionMapper actionMapper;
@@ -90,11 +91,11 @@ public class ActionServiceImpl implements ActionService {
     }
 
     @Override
-    public PagedModel<ActionStorageDto> getAllStorageActions(String ownerEmail, UUID storageId, Pageable pageable) {
+    public PagedModel<ActionDto> getAllStorageActions(String ownerEmail, UUID storageId, Pageable pageable) {
 
-        Page<Item> actions = itemRepository
-                .findAllByActionStorageIdAndActionStorageOwnerEmailOrderByActionCreatedAtDesc(storageId, ownerEmail, pageable);
-        return itemPagedResourcesAssembler.toModel(actions, itemMapper::toActionStorageDto);
+        Page<Action> actions = actionRepository
+                .findAllByStorageIdAndStorageOwnerEmail(pageable, storageId, ownerEmail);
+        return actionPagedResourcesAssembler.toModel(actions, actionMapper::toDto);
     }
 
     @Override
@@ -111,7 +112,7 @@ public class ActionServiceImpl implements ActionService {
 
         storageService.removeStorageItems(storage.getId(), removedItems);
 
-        // towrzenie akcji
+        // Create action
         Action action = new Action();
         action.setAction(ActionType.REMOVE);
         action.setEmployee(employee);

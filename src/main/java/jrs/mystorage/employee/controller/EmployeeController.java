@@ -46,8 +46,6 @@ public class EmployeeController {
         return new ResponseEntity<>(employeesByOwnerEmail, HttpStatus.OK);
     }
 
-    // TODO get not assign employee
-
     @GetMapping("/{employeeId}")
     @PreAuthorize(value = "hasAuthority('OWNER')")
     public ResponseEntity<EmployeeDto> getEmployee(

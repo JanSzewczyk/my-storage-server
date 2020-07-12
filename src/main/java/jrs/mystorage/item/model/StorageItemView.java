@@ -7,6 +7,7 @@ import org.hibernate.annotations.Subselect;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Currency;
 import java.util.UUID;
 
 @Data
@@ -21,6 +22,7 @@ public class StorageItemView {
     private Integer amount;
     private Double value;
     private Double totalValue;
+    private Currency currency;
 
     private UUID productId;
     private String productName;

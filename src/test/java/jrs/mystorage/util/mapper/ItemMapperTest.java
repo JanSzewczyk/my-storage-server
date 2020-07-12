@@ -12,7 +12,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(SpringRunner.class)
 @WebAppConfiguration
@@ -30,7 +30,7 @@ class ItemMapperTest {
 
         ItemDto itemDto = itemMapper.toDto(item);
 
-        assertEquals(itemDto.getItemId(), item.getId());
+        assertEquals(itemDto.getId(), item.getId());
         assertEquals(itemDto.getAmount(), item.getAmount());
     }
 }
