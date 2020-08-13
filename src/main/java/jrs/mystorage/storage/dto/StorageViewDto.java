@@ -12,7 +12,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class StorageViewDto {
 
-    private UUID storageId;
+    private UUID id;
     private String name;
     private Double surface;
     private String addressStreet;

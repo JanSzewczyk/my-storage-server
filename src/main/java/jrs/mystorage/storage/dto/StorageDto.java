@@ -15,7 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class StorageDto {
 
-    private UUID storageId;
+    private UUID id;
     private String name;
     private Double surface;
     private String addressStreet;

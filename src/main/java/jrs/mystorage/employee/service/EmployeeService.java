@@ -1,9 +1,6 @@
 package jrs.mystorage.employee.service;
 
-import jrs.mystorage.employee.dto.CEmployeeDto;
-import jrs.mystorage.employee.dto.EmployeeDto;
-import jrs.mystorage.employee.dto.EmployeeViewDto;
-import jrs.mystorage.employee.dto.UEmployeeDto;
+import jrs.mystorage.employee.dto.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 
@@ -22,4 +19,6 @@ public interface EmployeeService {
     EmployeeDto updateEmployee(String ownerEmail, UUID employeeId, UEmployeeDto updatedEmployee);
 
     EmployeeDto removeEmployee(String ownerEmail, UUID employeeId);
+
+    EmployeeDto changeEmployeeStorage(String ownerEmail, UUID employeeId, AssignStorageDto assignStorage);
 }

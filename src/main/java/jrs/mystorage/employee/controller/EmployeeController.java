@@ -1,9 +1,6 @@
 package jrs.mystorage.employee.controller;
 
-import jrs.mystorage.employee.dto.CEmployeeDto;
-import jrs.mystorage.employee.dto.EmployeeDto;
-import jrs.mystorage.employee.dto.EmployeeViewDto;
-import jrs.mystorage.employee.dto.UEmployeeDto;
+import jrs.mystorage.employee.dto.*;
 import jrs.mystorage.employee.service.EmployeeService;
 
 import lombok.RequiredArgsConstructor;
@@ -64,6 +61,17 @@ public class EmployeeController {
     ) {
         EmployeeDto employee = employeeService.createEmployee(principal.getName(), employeeDto);
         return new ResponseEntity<>(employee, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/{employeeId}/storage")
+    @PreAuthorize(value = "hasAuthority('OWNER')")
+    public ResponseEntity<EmployeeDto> changeEmployeeStorage(
+            final Principal principal,
+            @PathVariable UUID employeeId,
+            @RequestBody @Valid AssignStorageDto assignStorage
+    ) {
+        EmployeeDto employee = employeeService.changeEmployeeStorage(principal.getName(), employeeId, assignStorage);
+        return new ResponseEntity<>(employee, HttpStatus.OK);
     }
 
     @PutMapping("/{employeeId}")

@@ -5,6 +5,7 @@ import jrs.mystorage.storage.dto.StorageDto;
 import jrs.mystorage.storage.dto.StorageStatisticDto;
 import jrs.mystorage.storage.dto.StorageViewDto;
 import jrs.mystorage.storage.service.StorageService;
+import jrs.mystorage.util.ShortID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,24 @@ public class StorageController {
     public ResponseEntity<List<StorageViewDto>> getOwnerStorages(
             final Principal principal
     ) {
+
+        System.out.println(ShortID.randomShortID());
+        System.out.println(ShortID.randomShortID());
+        System.out.println(ShortID.randomShortID());
+        System.out.println(ShortID.randomShortID());
+        System.out.println(ShortID.randomShortID());
+        System.out.println(ShortID.randomShortID());
+        System.out.println(ShortID.randomShortID());
+        System.out.println(ShortID.randomShortID());
+        System.out.println(ShortID.randomShortID());
+        System.out.println(ShortID.randomShortID());
+        System.out.println(ShortID.randomShortID());
+        System.out.println(ShortID.randomShortID());
+        System.out.println(ShortID.randomShortID());
+        System.out.println(ShortID.randomShortID());
+        System.out.println(ShortID.randomShortID());
+        System.out.println(ShortID.randomShortID());
+        System.out.println(ShortID.randomShortID());
         List<StorageViewDto> ownerStorages = storageService.getOwnerStorages(principal.getName());
         return new ResponseEntity<>(ownerStorages, HttpStatus.OK);
     }

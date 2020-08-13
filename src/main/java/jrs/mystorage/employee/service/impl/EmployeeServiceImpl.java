@@ -1,9 +1,6 @@
 package jrs.mystorage.employee.service.impl;
 
-import jrs.mystorage.employee.dto.CEmployeeDto;
-import jrs.mystorage.employee.dto.EmployeeDto;
-import jrs.mystorage.employee.dto.EmployeeViewDto;
-import jrs.mystorage.employee.dto.UEmployeeDto;
+import jrs.mystorage.employee.dto.*;
 import jrs.mystorage.employee.model.Employee;
 import jrs.mystorage.employee.repository.EmployeeRepository;
 import jrs.mystorage.employee.service.EmployeeService;
@@ -11,6 +8,7 @@ import jrs.mystorage.owner.model.Owner;
 import jrs.mystorage.owner.repository.OwnerRepository;
 import jrs.mystorage.storage.model.Storage;
 import jrs.mystorage.storage.repository.StorageRepository;
+import jrs.mystorage.util.exception.ConflictException;
 import jrs.mystorage.util.exception.NotFoundException;
 import jrs.mystorage.util.mapper.EmployeeMapper;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +20,8 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
+
+import static jrs.mystorage.util.MessageTemplates.*;
 
 @Service
 @RequiredArgsConstructor
@@ -42,14 +42,14 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setOwner(owner);
 
         if (newEmployee.getStorageId() != null) {
-            Storage storage = storageRepository.findByIdAndOwnerEmail(newEmployee.getStorageId(), ownerEmail)
-                    .orElseThrow(NotFoundException::new);
+            UUID storageId = newEmployee.getStorageId();
+            Storage storage = storageRepository.findByIdAndOwnerEmail(storageId, ownerEmail)
+                    .orElseThrow(() -> new NotFoundException(String.format(STORAGE_NOT_FOUND_MESSAGE_TEMPLATE, storageId)));
 
             employee.setStorage(storage);
         }
 
-        employeeRepository.save(employee);
-        return employeeMapper.toDto(employee);
+        return employeeMapper.toDto(employeeRepository.save(employee));
     }
 
     @Override
@@ -68,37 +68,59 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeDto getEmployees(String ownerEmail, UUID employeeId) {
         Employee employee = employeeRepository.findByIdAndOwnerEmail(employeeId, ownerEmail)
-                .orElseThrow(NotFoundException::new);
+                .orElseThrow(() -> new NotFoundException(String.format(EMPLOYEE_NOT_FOUND_MESSAGE_TEMPLATE, employeeId)));
         return employeeMapper.toDto(employee);
     }
 
     @Override
     public EmployeeDto removeEmployee(String ownerEmail, UUID employeeId) {
         Employee employee = employeeRepository.findByIdAndOwnerEmail(employeeId, ownerEmail)
-                .orElseThrow(NotFoundException::new);
+                .orElseThrow(() -> new NotFoundException(String.format(EMPLOYEE_NOT_FOUND_MESSAGE_TEMPLATE, employeeId)));
         employeeRepository.delete(employee);
         return employeeMapper.toDto(employee);
     }
 
     @Override
+    public EmployeeDto changeEmployeeStorage(String ownerEmail, UUID employeeId, AssignStorageDto assignStorage) {
+        Employee employee = employeeRepository.findByIdAndOwnerEmail(employeeId, ownerEmail)
+                .orElseThrow(() -> new NotFoundException(String.format(EMPLOYEE_NOT_FOUND_MESSAGE_TEMPLATE, employeeId)));
+
+        if ((employee.getStorage() != null && !employee.getStorage().getId().equals(assignStorage.getStorageId())) ||
+                (employee.getStorage() == null && assignStorage.getStorageId() != null)) {
+
+            if (assignStorage.getStorageId() != null) {
+                UUID storageId = assignStorage.getStorageId();
+                Storage newStorage = storageRepository.findByIdAndOwnerEmail(storageId, ownerEmail)
+                        .orElseThrow(() -> new NotFoundException(String.format(STORAGE_NOT_FOUND_MESSAGE_TEMPLATE, storageId)));
+                employee.setStorage(newStorage);
+            } else {
+                employee.setStorage(null);
+            }
+
+        } else throw new ConflictException(String.format(EMPLOYEE_CHANGE_STORAGE_CONFLICT_MESSAGE_TEMPLATE, employeeId));
+
+      return employeeMapper.toDto(employeeRepository.save(employee));
+    }
+
+    @Override
     public EmployeeDto updateEmployee(String ownerEmail, UUID employeeId, UEmployeeDto updatedEmployee) {
         Employee employee = employeeRepository.findById(employeeId)
-                .orElseThrow(NotFoundException::new);
+                .orElseThrow(() -> new NotFoundException(String.format(EMPLOYEE_NOT_FOUND_MESSAGE_TEMPLATE, employeeId)));
 
         if (updatedEmployee.getPassword().equals("")) {
             updatedEmployee.setPassword(employee.getPassword());
         }
 
         if ((employee.getStorage() == null || employee.getStorage().getId() != updatedEmployee.getStorageId()) && updatedEmployee.getStorageId() != null) {
-            Storage storage = storageRepository.findByIdAndOwnerEmail(updatedEmployee.getStorageId(), ownerEmail)
-                    .orElseThrow(NotFoundException::new);
+            UUID storageId = updatedEmployee.getStorageId();
+            Storage storage = storageRepository.findByIdAndOwnerEmail(storageId, ownerEmail)
+                    .orElseThrow(() -> new NotFoundException(String.format(STORAGE_NOT_FOUND_MESSAGE_TEMPLATE, storageId)));
             employee.setStorage(storage);
         } else if (updatedEmployee.getStorageId() == null ) {
             employee.setStorage(null);
         }
 
         employeeMapper.updateEntity(updatedEmployee, employee);
-        employeeRepository.save(employee);
-        return employeeMapper.toDto(employee);
+        return employeeMapper.toDto(employeeRepository.save(employee));
     }
 }
