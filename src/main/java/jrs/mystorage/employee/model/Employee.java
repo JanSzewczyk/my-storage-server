@@ -27,10 +27,13 @@ public class Employee {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(insertable = false, updatable = false)
+    @Column(insertable = false, updatable = false, unique = true)
     private UUID id;
 
-    @Column(updatable = false, nullable = false, unique = true)
+    @Column(nullable = false, updatable = false, unique = true)
+    private String shortId;
+
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)

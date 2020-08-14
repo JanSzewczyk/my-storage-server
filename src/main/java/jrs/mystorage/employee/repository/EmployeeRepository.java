@@ -20,4 +20,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, UUID> {
     Page<Employee> findAllByOwnerEmail(String ownerEmail, Pageable pageable);
 
     Page<Employee> findAllByOwnerEmailAndStorageId(String ownerEmail, UUID storageId, Pageable pageable);
+
+    Boolean existsByShortId(String shortId);
 }

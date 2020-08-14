@@ -16,6 +16,8 @@ public class EmployeeDto implements UserDto {
 
     private UUID Id;
 
+    private String shortId;
+
     private String email;
 
     private String firstName;

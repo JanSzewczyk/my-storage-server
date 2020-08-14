@@ -8,6 +8,7 @@ import jrs.mystorage.owner.model.Owner;
 import jrs.mystorage.owner.repository.OwnerRepository;
 import jrs.mystorage.storage.model.Storage;
 import jrs.mystorage.storage.repository.StorageRepository;
+import jrs.mystorage.util.ShortID;
 import jrs.mystorage.util.exception.ConflictException;
 import jrs.mystorage.util.exception.NotFoundException;
 import jrs.mystorage.util.mapper.EmployeeMapper;
@@ -40,6 +41,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         Employee employee = employeeMapper.toEntity(newEmployee);
         employee.setOwner(owner);
+        employee.setShortId(this.generateShortId());
 
         if (newEmployee.getStorageId() != null) {
             UUID storageId = newEmployee.getStorageId();
@@ -122,5 +124,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         employeeMapper.updateEntity(updatedEmployee, employee);
         return employeeMapper.toDto(employeeRepository.save(employee));
+    }
+
+    private String generateShortId() {
+        String generatedID;
+        do {
+            generatedID = ShortID.randomShortID();
+        } while (employeeRepository.existsByShortId(generatedID));
+
+        return generatedID;
     }
 }

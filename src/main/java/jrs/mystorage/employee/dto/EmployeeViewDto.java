@@ -19,6 +19,7 @@ import java.util.UUID;
 public class EmployeeViewDto extends RepresentationModel<EmployeeViewDto> {
 
     private UUID id;
+    private String shortId;
     private String email;
     private String firstName;
     private String lastName;
