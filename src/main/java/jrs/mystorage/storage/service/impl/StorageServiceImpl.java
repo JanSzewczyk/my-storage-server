@@ -16,6 +16,7 @@ import jrs.mystorage.storage.model.Storage;
 import jrs.mystorage.storage.repository.StorageRepository;
 import jrs.mystorage.storage.service.StorageService;
 import jrs.mystorage.user.service.UserService;
+import jrs.mystorage.util.ShortID;
 import jrs.mystorage.util.exception.ConflictException;
 import jrs.mystorage.util.exception.NotFoundException;
 import jrs.mystorage.util.mapper.StorageMapper;
@@ -25,6 +26,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static jrs.mystorage.util.MessageTemplates.OWNER_NOT_FOUND_MESSAGE_TEMPLATE;
+import static jrs.mystorage.util.MessageTemplates.STORAGE_NOT_FOUND_MESSAGE_TEMPLATE;
 
 @Service
 @RequiredArgsConstructor
@@ -50,30 +54,31 @@ public class StorageServiceImpl implements StorageService {
     public StorageDto getStorage(String userEmail, UUID storageId) {
         Role role = userService.getUserTypeByEmail(userEmail);
         Storage storage = storageRepository.findById(storageId)
-                .orElseThrow(NotFoundException::new);
+                .orElseThrow(() -> new NotFoundException(String.format(STORAGE_NOT_FOUND_MESSAGE_TEMPLATE, storageId)));
 
         if ((role == Role.OWNER && storage.getOwner().getEmail().equals(userEmail)) || (role == Role.EMPLOYEE && storage.getEmployees().stream().anyMatch(employee -> employee.getEmail().equals(userEmail)))) {
             return storageMapper.toDto(storage);
         } else {
-            throw new NotFoundException();
+            throw new NotFoundException(String.format(STORAGE_NOT_FOUND_MESSAGE_TEMPLATE, storageId));
         }
     }
 
     @Override
     public StorageDto createStorage(String ownerEmail, CUStorageDto newStorage) {
         Owner owner = ownerRepository.findByEmail(ownerEmail)
-                .orElseThrow(NotFoundException::new);
+                .orElseThrow(() -> new NotFoundException(String.format(OWNER_NOT_FOUND_MESSAGE_TEMPLATE, ownerEmail)));
 
         Storage storage = storageMapper.toEntity(newStorage);
         storage.setOwner(owner);
-        storageRepository.save(storage);
-        return storageMapper.toDto(storage);
+        storage.setShortId(this.generateShortId());
+
+        return storageMapper.toDto(storageRepository.save(storage));
     }
 
     @Override
     public StorageDto updateStorage(String ownerEmail, UUID storageId, CUStorageDto updatedStorage) {
         Storage storage = storageRepository.findByIdAndOwnerEmail(storageId, ownerEmail)
-                .orElseThrow(NotFoundException::new);
+                .orElseThrow(() -> new NotFoundException(String.format(STORAGE_NOT_FOUND_MESSAGE_TEMPLATE, storageId)));
 
         storage = storageMapper.updateEntity(updatedStorage, storage);
         storageRepository.save(storage);
@@ -83,7 +88,7 @@ public class StorageServiceImpl implements StorageService {
     @Override
     public StorageDto removeOwnerStorage(String ownerEmail, UUID storageId) {
         Storage storage = storageRepository.findByIdAndOwnerEmail(storageId, ownerEmail)
-                .orElseThrow(NotFoundException::new);
+                .orElseThrow(() -> new NotFoundException(String.format(STORAGE_NOT_FOUND_MESSAGE_TEMPLATE, storageId)));
 
         storageRepository.delete(storage);
         return storageMapper.toDto(storage);
@@ -92,7 +97,7 @@ public class StorageServiceImpl implements StorageService {
     @Override
     public void storeItemsInStorage(UUID storageId, List<Item> items) {
         Storage storage = storageRepository.findById(storageId)
-                .orElseThrow(NotFoundException::new);
+                .orElseThrow(() -> new NotFoundException(String.format(STORAGE_NOT_FOUND_MESSAGE_TEMPLATE, storageId)));
 
         items.forEach(item -> {
             Optional<Item> findItem = itemRepository
@@ -137,7 +142,7 @@ public class StorageServiceImpl implements StorageService {
         List<StorageStatisticDto> statistics = new ArrayList<>();
 
         Storage storage = storageRepository.findByIdAndOwnerEmail(storageId, ownerEmail)
-                .orElseThrow(NotFoundException::new);
+                .orElseThrow(() -> new NotFoundException(String.format(STORAGE_NOT_FOUND_MESSAGE_TEMPLATE, storageId)));
 
         Currency currency = storage.getOwner().getCurrency();
         List<Action> actions = storage.getActions();
@@ -185,5 +190,14 @@ public class StorageServiceImpl implements StorageService {
         }
 
         return statistics;
+    }
+
+    private String generateShortId() {
+        String generatedID;
+        do {
+            generatedID = ShortID.randomShortID();
+        } while (storageRepository.existsByShortId(generatedID));
+
+        return generatedID;
     }
 }

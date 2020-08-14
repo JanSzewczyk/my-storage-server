@@ -13,6 +13,7 @@ import java.util.UUID;
 public class StorageViewDto {
 
     private UUID id;
+    private String shortId;
     private String name;
     private Double surface;
     private String addressStreet;

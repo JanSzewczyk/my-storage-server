@@ -14,4 +14,6 @@ public interface StorageRepository extends JpaRepository<Storage, UUID> {
     List<Storage> findAllByOwnerEmail(String ownerId);
 
     Optional<Storage> findByIdAndOwnerEmail(UUID storageId, String ownerEmail);
+
+    Boolean existsByShortId(String shortId);
 }
