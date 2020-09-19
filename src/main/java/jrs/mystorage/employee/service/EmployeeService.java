@@ -1,6 +1,9 @@
 package jrs.mystorage.employee.service;
 
 import jrs.mystorage.employee.dto.*;
+import jrs.mystorage.employee.model.Employee;
+import jrs.mystorage.employee.model.EmployeeView;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 
@@ -8,9 +11,9 @@ import java.util.UUID;
 
 public interface EmployeeService {
 
-    PagedModel<EmployeeViewDto> getEmployeesByOwnerEmail(String ownerEmail, Pageable pageable);
+    Page<EmployeeView> findAllEmployeesByOwnerEmail(String ownerEmail, Pageable pageable, String search);
 
-    PagedModel<EmployeeViewDto> getEmployeesByStorage(String ownerEmail, UUID storageId, Pageable pageable);
+    Page<EmployeeView> findAllEmployeesWorkingInStorage(String ownerEmail, UUID storageId, Pageable pageable);
 
     EmployeeDto getEmployees(String ownerEmail, UUID employeeId);
 

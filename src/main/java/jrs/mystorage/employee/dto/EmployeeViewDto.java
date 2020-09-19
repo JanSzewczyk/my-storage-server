@@ -1,6 +1,5 @@
 package jrs.mystorage.employee.dto;
 
-import jrs.mystorage.storage.dto.StorageDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

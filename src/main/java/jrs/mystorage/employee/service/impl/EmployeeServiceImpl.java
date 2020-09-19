@@ -2,7 +2,9 @@ package jrs.mystorage.employee.service.impl;
 
 import jrs.mystorage.employee.dto.*;
 import jrs.mystorage.employee.model.Employee;
+import jrs.mystorage.employee.model.EmployeeView;
 import jrs.mystorage.employee.repository.EmployeeRepository;
+import jrs.mystorage.employee.repository.EmployeeViewRepository;
 import jrs.mystorage.employee.service.EmployeeService;
 import jrs.mystorage.owner.model.Owner;
 import jrs.mystorage.owner.repository.OwnerRepository;
@@ -16,23 +18,28 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 import static jrs.mystorage.util.MessageTemplates.*;
+import static jrs.mystorage.util.database.SpecificationBuildHelper.containsTextInAttributes;
+import static jrs.mystorage.util.database.SpecificationBuildHelper.fieldEquals;
 
 @Service
 @RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
 
+    private static final List<String> EMPLOYEE_SEARCH_FIELDS = List.of("shortId", "email", "name", "storageName");
     private final PagedResourcesAssembler<Employee> employeePagedResourcesAssembler;
     private final EmployeeRepository employeeRepository;
     private final OwnerRepository ownerRepository;
     private final EmployeeMapper employeeMapper;
     private final StorageRepository storageRepository;
+    private final EmployeeViewRepository employeeViewRepository;
 
     @Override
     public EmployeeDto createEmployee(String ownerEmail, CEmployeeDto newEmployee) {
@@ -55,16 +62,19 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public PagedModel<EmployeeViewDto> getEmployeesByOwnerEmail(String ownerEmail, Pageable pageable) {
-        Page<Employee> employees = employeeRepository.findAllByOwnerEmail(ownerEmail, pageable);
-        return employeePagedResourcesAssembler.toModel(employees, employeeMapper::toViewDto);
+    public Page<EmployeeView> findAllEmployeesByOwnerEmail(String ownerEmail, Pageable pageable, String search) {
+//        Page<Employee> employees =
+        Specification<EmployeeView> employeeViewSpecification = getEmployeeViewSpecification(search);
+//        Specification<Employee> ownerEmailSpec= fieldEquals("ownerEmail", ownerEmail);
+        return employeeViewRepository.findAll(employeeViewSpecification, pageable);
     }
 
     @Override
-    public PagedModel<EmployeeViewDto> getEmployeesByStorage(String ownerEmail, UUID storageId, Pageable pageable) {
-        Page<Employee> employees = employeeRepository
-                .findAllByOwnerEmailAndStorageId(ownerEmail, storageId, pageable);
-        return employeePagedResourcesAssembler.toModel(employees, employeeMapper::toViewDto);
+    public Page<EmployeeView> findAllEmployeesWorkingInStorage(String ownerEmail, UUID storageId, Pageable pageable) {
+//        Specification<EmployeeView> employeeViewSpecification = getEmployeeViewSpecification(search);
+        Specification<EmployeeView> ownerEmailSpec= fieldEquals("ownerEmail", ownerEmail);
+        Specification<EmployeeView> storageSpec= fieldEquals("storageId", storageId);
+        return employeeViewRepository.findAll(ownerEmailSpec.and(storageSpec), pageable);
     }
 
     @Override
@@ -133,5 +143,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         } while (employeeRepository.existsByShortId(generatedID));
 
         return generatedID;
+    }
+
+    private Specification<EmployeeView> getEmployeeViewSpecification(String searchString) {
+//        Specification<OfferView> containsStateSpecification = in(OFFER_VIEW_STATE, states);
+        Specification<EmployeeView> containsTextInAttributesSpecification = containsTextInAttributes(searchString, EMPLOYEE_SEARCH_FIELDS);
+
+//        return states != null ? containsStateSpecification.and(containsTextInAttributesSpecification) : containsTextInAttributesSpecification;
+        return containsTextInAttributesSpecification;
     }
 }
