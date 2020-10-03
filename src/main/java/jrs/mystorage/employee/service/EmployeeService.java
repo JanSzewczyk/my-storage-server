@@ -11,9 +11,9 @@ import java.util.UUID;
 
 public interface EmployeeService {
 
-    Page<EmployeeView> findAllEmployeesByOwnerEmail(String ownerEmail, Pageable pageable, String search);
+    Page<EmployeeView> findAllEmployeesByOwnerId(UUID ownerId, Pageable pageable, String search);
 
-    Page<EmployeeView> findAllEmployeesWorkingInStorage(String ownerEmail, UUID storageId, Pageable pageable);
+    Page<EmployeeView> findAllEmployeesWorkingInStorage(UUID ownerId, UUID storageId, Pageable pageable);
 
     EmployeeDto getEmployees(String ownerEmail, UUID employeeId);
 

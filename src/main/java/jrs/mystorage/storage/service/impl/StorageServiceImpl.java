@@ -11,9 +11,10 @@ import jrs.mystorage.owner.repository.OwnerRepository;
 import jrs.mystorage.storage.dto.CUStorageDto;
 import jrs.mystorage.storage.dto.StorageDto;
 import jrs.mystorage.storage.dto.StorageStatisticDto;
-import jrs.mystorage.storage.dto.StorageViewDto;
 import jrs.mystorage.storage.model.Storage;
+import jrs.mystorage.storage.model.StorageView;
 import jrs.mystorage.storage.repository.StorageRepository;
+import jrs.mystorage.storage.repository.StorageViewRepository;
 import jrs.mystorage.storage.service.StorageService;
 import jrs.mystorage.user.service.UserService;
 import jrs.mystorage.util.ShortID;
@@ -21,6 +22,9 @@ import jrs.mystorage.util.exception.ConflictException;
 import jrs.mystorage.util.exception.NotFoundException;
 import jrs.mystorage.util.mapper.StorageMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -29,26 +33,32 @@ import java.util.stream.Collectors;
 
 import static jrs.mystorage.util.MessageTemplates.OWNER_NOT_FOUND_MESSAGE_TEMPLATE;
 import static jrs.mystorage.util.MessageTemplates.STORAGE_NOT_FOUND_MESSAGE_TEMPLATE;
+import static jrs.mystorage.util.database.SpecificationBuildHelper.containsTextInAttributes;
+import static jrs.mystorage.util.database.SpecificationBuildHelper.fieldEquals;
 
 @Service
 @RequiredArgsConstructor
 public class StorageServiceImpl implements StorageService {
 
+    private static final List<String> STORAGE_SEARCH_FIELDS =
+            List.of("id", "shortId", "name", "addressCity", "addressStreet", "addressCountry");
+
     private final UserService userService;
     private final StorageRepository storageRepository;
+    private final StorageViewRepository storageViewRepository;
     private final StorageMapper storageMapper;
     private final OwnerRepository ownerRepository;
     private final ItemRepository itemRepository;
 
-    @Override
-    public List<StorageViewDto> getOwnerStorages(String ownerEmail) {
-        List<Storage> storages = storageRepository.findAllByOwnerEmail(ownerEmail);
-
-        return storages
-                .stream()
-                .map(storageMapper::toViewDto)
-                .collect(Collectors.toList());
-    }
+//    @Override
+//    public List<StorageViewDto> getOwnerStorages(String ownerEmail) {
+//        List<Storage> storages = storageRepository.findAllByOwnerEmail(ownerEmail);
+//
+//        return storages
+//                .stream()
+//                .map(storageMapper::toViewDto)
+//                .collect(Collectors.toList());
+//    }
 
     @Override
     public StorageDto getStorage(String userEmail, UUID storageId) {
@@ -190,6 +200,22 @@ public class StorageServiceImpl implements StorageService {
         }
 
         return statistics;
+    }
+
+    @Override
+    public Page<StorageView> findAllStoragesByOwnerId(UUID ownerId, Pageable pageable, String search) {
+        Specification<StorageView> ownerIdSpec = fieldEquals("ownerId", ownerId);
+        Specification<StorageView> storageViewSpec = getStorageViewSpecification(search);
+        return storageViewRepository.findAll(ownerIdSpec.and(storageViewSpec) , pageable);
+    }
+
+    private Specification<StorageView> getStorageViewSpecification(String searchString) {
+//        Specification<OfferView> containsStateSpecification = in(OFFER_VIEW_STATE, states);
+        Specification<StorageView> containsTextInAttributesSpecification =
+                containsTextInAttributes(searchString, STORAGE_SEARCH_FIELDS);
+
+//        return states != null ? containsStateSpecification.and(containsTextInAttributesSpecification) : containsTextInAttributesSpecification;
+        return containsTextInAttributesSpecification;
     }
 
     private String generateShortId() {

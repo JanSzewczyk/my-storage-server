@@ -2,7 +2,6 @@ package jrs.mystorage.util.mapper;
 
 import jrs.mystorage.storage.dto.CUStorageDto;
 import jrs.mystorage.storage.dto.StorageDto;
-import jrs.mystorage.storage.dto.StorageViewDto;
 import jrs.mystorage.storage.model.Storage;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -18,12 +17,6 @@ public class StorageMapper extends Mapper<Storage, StorageDto> {
 
     @PostConstruct
     public void init() {
-//        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
-//        mapper
-//                .cre(Storage.class, StorageViewDto.class)
-//                .addMappings(m -> {
-//                    m.map(s -> s.getEmployees().size(), StorageViewDto::setNumberOfEmployees);
-//                });
     }
 
     @Override
@@ -45,9 +38,4 @@ public class StorageMapper extends Mapper<Storage, StorageDto> {
         return mapper.map(storage, StorageDto.class);
     }
 
-    public StorageViewDto toViewDto(Storage storage) {
-        StorageViewDto map = mapper.map(storage, StorageViewDto.class);
-        map.setNumberOfEmployees(storage.getNumberOfEmployees());
-        return map;
-    }
 }

@@ -1,12 +1,15 @@
 package jrs.mystorage.storage.constroller;
 
+import jrs.mystorage.storage.StorageComponent;
 import jrs.mystorage.storage.dto.CUStorageDto;
 import jrs.mystorage.storage.dto.StorageDto;
 import jrs.mystorage.storage.dto.StorageStatisticDto;
-import jrs.mystorage.storage.dto.StorageViewDto;
+import jrs.mystorage.storage.model.StorageView;
 import jrs.mystorage.storage.service.StorageService;
-import jrs.mystorage.util.ShortID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,66 +26,16 @@ import java.util.UUID;
 public class StorageController {
 
     private final StorageService storageService;
+    private final StorageComponent storageComponent;
 
     @GetMapping
     @PreAuthorize(value = "hasAuthority('OWNER')")
-    public ResponseEntity<List<StorageViewDto>> getOwnerStorages(
-            final Principal principal
+    public ResponseEntity<PagedModel<EntityModel<StorageView>>> getOwnerStorages(
+            final Principal principal,
+            Pageable pageable,
+            @RequestParam(required = false) String search
     ) {
-
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        System.out.println(ShortID.randomShortID());
-        List<StorageViewDto> ownerStorages = storageService.getOwnerStorages(principal.getName());
-        return new ResponseEntity<>(ownerStorages, HttpStatus.OK);
+        return new ResponseEntity<>(storageComponent.findStorageView(principal.getName(), pageable, search), HttpStatus.OK);
     }
 
     @GetMapping("/{storageId}")

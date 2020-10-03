@@ -62,18 +62,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Page<EmployeeView> findAllEmployeesByOwnerEmail(String ownerEmail, Pageable pageable, String search) {
-//        Page<Employee> employees =
+    public Page<EmployeeView> findAllEmployeesByOwnerId(UUID ownerId, Pageable pageable, String search) {
         Specification<EmployeeView> employeeViewSpecification = getEmployeeViewSpecification(search);
-//        Specification<Employee> ownerEmailSpec= fieldEquals("ownerEmail", ownerEmail);
-        return employeeViewRepository.findAll(employeeViewSpecification, pageable);
+        Specification<EmployeeView> ownerEmailSpec= fieldEquals("ownerId", ownerId);
+        return employeeViewRepository.findAll(ownerEmailSpec.and(employeeViewSpecification), pageable);
     }
 
     @Override
-    public Page<EmployeeView> findAllEmployeesWorkingInStorage(String ownerEmail, UUID storageId, Pageable pageable) {
-//        Specification<EmployeeView> employeeViewSpecification = getEmployeeViewSpecification(search);
-        Specification<EmployeeView> ownerEmailSpec= fieldEquals("ownerEmail", ownerEmail);
-        Specification<EmployeeView> storageSpec= fieldEquals("storageId", storageId);
+    public Page<EmployeeView> findAllEmployeesWorkingInStorage(UUID ownerId, UUID storageId, Pageable pageable) {
+        Specification<EmployeeView> ownerEmailSpec = fieldEquals("ownerId", ownerId);
+        Specification<EmployeeView> storageSpec = fieldEquals("storageId", storageId);
         return employeeViewRepository.findAll(ownerEmailSpec.and(storageSpec), pageable);
     }
 
@@ -136,6 +134,14 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeMapper.toDto(employeeRepository.save(employee));
     }
 
+    private Specification<EmployeeView> getEmployeeViewSpecification(String searchString) {
+//        Specification<OfferView> containsStateSpecification = in(OFFER_VIEW_STATE, states);
+        Specification<EmployeeView> containsTextInAttributesSpecification = containsTextInAttributes(searchString, EMPLOYEE_SEARCH_FIELDS);
+
+//        return states != null ? containsStateSpecification.and(containsTextInAttributesSpecification) : containsTextInAttributesSpecification;
+        return containsTextInAttributesSpecification;
+    }
+
     private String generateShortId() {
         String generatedID;
         do {
@@ -143,13 +149,5 @@ public class EmployeeServiceImpl implements EmployeeService {
         } while (employeeRepository.existsByShortId(generatedID));
 
         return generatedID;
-    }
-
-    private Specification<EmployeeView> getEmployeeViewSpecification(String searchString) {
-//        Specification<OfferView> containsStateSpecification = in(OFFER_VIEW_STATE, states);
-        Specification<EmployeeView> containsTextInAttributesSpecification = containsTextInAttributes(searchString, EMPLOYEE_SEARCH_FIELDS);
-
-//        return states != null ? containsStateSpecification.and(containsTextInAttributesSpecification) : containsTextInAttributesSpecification;
-        return containsTextInAttributesSpecification;
     }
 }
