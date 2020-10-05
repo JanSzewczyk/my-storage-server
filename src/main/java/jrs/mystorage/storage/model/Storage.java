@@ -44,19 +44,20 @@ public class Storage {
     @Min(0)
     private Double surface;
 
-    @Column
+    @Column(nullable = false)
     @Length(min = 3)
     private String addressStreet;
 
-    @Column
+    @Column(nullable = false)
     @Length(min = 3)
     private String addressCity;
 
-    @Column
+    @Column(nullable = false)
     @Length(min = 3)
     private String addressZip;
 
-    @Column
+    @Column(nullable = false)
+    @Length(min = 3)
     private String addressCountry;
 
     @ManyToOne(
