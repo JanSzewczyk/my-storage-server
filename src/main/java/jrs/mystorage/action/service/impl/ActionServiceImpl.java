@@ -130,4 +130,9 @@ public class ActionServiceImpl implements ActionService {
 
         itemRepository.saveAll(removeActionItems);
     }
+
+    @Override
+    public List<Action> findAllActionsByEmployeeId(UUID employeeId) {
+        return actionRepository.findAllByEmployeeId(employeeId);
+    }
 }

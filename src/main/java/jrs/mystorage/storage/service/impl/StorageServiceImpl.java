@@ -50,15 +50,10 @@ public class StorageServiceImpl implements StorageService {
     private final OwnerRepository ownerRepository;
     private final ItemRepository itemRepository;
 
-//    @Override
-//    public List<StorageViewDto> getOwnerStorages(String ownerEmail) {
-//        List<Storage> storages = storageRepository.findAllByOwnerEmail(ownerEmail);
-//
-//        return storages
-//                .stream()
-//                .map(storageMapper::toViewDto)
-//                .collect(Collectors.toList());
-//    }
+    @Override
+    public List<Storage> findAllStorages(UUID ownerId) {
+        return storageRepository.findAllByOwnerId(ownerId);
+    }
 
     @Override
     public StorageDto getStorage(String userEmail, UUID storageId) {

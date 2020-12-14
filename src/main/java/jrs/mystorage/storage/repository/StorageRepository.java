@@ -11,7 +11,7 @@ import java.util.UUID;
 @Repository
 public interface StorageRepository extends JpaRepository<Storage, UUID> {
 
-    List<Storage> findAllByOwnerEmail(String ownerId);
+    List<Storage> findAllByOwnerId(UUID ownerId);
 
     Optional<Storage> findByIdAndOwnerEmail(UUID storageId, String ownerEmail);
 

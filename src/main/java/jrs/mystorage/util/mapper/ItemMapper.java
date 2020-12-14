@@ -23,7 +23,7 @@ public class ItemMapper  extends Mapper<Item, ItemDto> {
                     m.map(s -> s.getProduct().getId(), ItemDto::setProductId);
                     m.map(s -> s.getProduct().getName(), ItemDto::setProductName);
                     m.map(s -> s.getProduct().getValue(), ItemDto::setProductValue);
-                    m.map(s -> s.getAction().getStorage().getOwner().getCurrency(), ItemDto::setCurrency);
+                    m.map(s -> s.getStorage().getOwner().getCurrency(), ItemDto::setCurrency);
                 });
 
     }
@@ -41,6 +41,13 @@ public class ItemMapper  extends Mapper<Item, ItemDto> {
     public ItemDto toDto(Item item) {
         ItemDto mappedItem = mapper.map(item, ItemDto.class);
         mappedItem.setTotalValue(item.getAmount() * item.getProduct().getValue());
+        return mappedItem;
+    }
+
+    public ItemDto toActionDto(Item item) {
+        ItemDto mappedItem = mapper.map(item, ItemDto.class);
+        mappedItem.setTotalValue(item.getAmount() * item.getProduct().getValue());
+        mappedItem.setCurrency(item.getAction().getStorage().getOwner().getCurrency());
         return mappedItem;
     }
 }

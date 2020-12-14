@@ -39,7 +39,7 @@ public class ActionMapper extends Mapper<Action, ActionDto> {
         mappedAction.setItems(
                 action.getItems()
                         .stream()
-                        .map(itemMapper::toDto)
+                        .map(itemMapper::toActionDto)
                         .collect(Collectors.toList())
         );
 

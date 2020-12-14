@@ -33,7 +33,7 @@ public class Employee {
     @Column(nullable = false, updatable = false, unique = true)
     private String shortId;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String email;
 
     @Column(nullable = false)
@@ -46,7 +46,7 @@ public class Employee {
     private String lastName;
 
     @Length(max = 16)
-    @Column(length = 32, unique = true)
+    @Column(length = 32)
     private String phone;
 
     @Column

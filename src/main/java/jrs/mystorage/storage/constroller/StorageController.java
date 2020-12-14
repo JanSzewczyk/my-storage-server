@@ -38,6 +38,14 @@ public class StorageController {
         return new ResponseEntity<>(storageComponent.findStorageView(principal.getName(), pageable, search), HttpStatus.OK);
     }
 
+    @GetMapping("/list")
+    @PreAuthorize(value = "hasAuthority('OWNER')")
+    public ResponseEntity<List<StorageDto>> getOwnerStoragesList(
+            final Principal principal
+    ) {
+        return new ResponseEntity<>(storageComponent.findAllStorages(principal.getName()), HttpStatus.OK);
+    }
+
     @GetMapping("/{storageId}")
     @PreAuthorize(value = "hasAuthority('OWNER') or hasAuthority('EMPLOYEE')")
     public ResponseEntity<StorageDto> getStorage(
