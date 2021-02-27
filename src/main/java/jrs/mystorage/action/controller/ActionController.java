@@ -12,17 +12,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.UUID;
 
-import static jrs.mystorage.auth.model.Role.OWNER;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,7 +28,7 @@ public class ActionController {
     private final ActionService actionService;
     private final ActionComponent actionComponent;
 
-    @GetMapping("actions/storage/{storageId}")
+    @GetMapping("storage/{storageId}/actions")
     @PreAuthorize(value = "hasAuthority('OWNER')")
     public ResponseEntity<PagedModel<ActionDto>> getStorageActions(
             final Principal principal,
@@ -41,6 +37,17 @@ public class ActionController {
     ) {
         PagedModel<ActionDto> allStorageActions = actionService.getAllStorageActions(principal.getName(), storageId, pageable);
         return new ResponseEntity<>(allStorageActions, HttpStatus.OK);
+    }
+
+    @GetMapping("employee/{employeeId}/actions")
+    @PreAuthorize(value = "hasAuthority('OWNER')")
+    public ResponseEntity<PagedModel<ActionDto>> getEmployeeActions(
+            final Principal principal,
+            Pageable pageable,
+            @PathVariable UUID employeeId
+    ) {
+        PagedModel<ActionDto> allEmployeeActions = actionComponent.findAllEmployeeActions(employeeId, principal.getName(), pageable);
+        return new ResponseEntity<>(allEmployeeActions, HttpStatus.OK);
     }
 
     // TODO return action dto
@@ -63,22 +70,5 @@ public class ActionController {
     ) {
         actionService.removeItemsFromStorage(principal.getName(), removedItems);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @GetMapping("employee/{employeeId}/actions")
-    @PreAuthorize(value = "hasAuthority('OWNER') or hasAuthority('EMPLOYEE')")
-    public ResponseEntity<?> getEmployeeActions(
-            Authentication authentication,
-            @PathVariable UUID employeeId
-    ) {
-        System.out.println(authentication.getAuthorities());
-        authentication.getAuthorities().forEach(grantedAuthority -> {
-            System.out.println(grantedAuthority.getAuthority().equals(OWNER.name()));
-        });
-        System.out.println(authentication.getDetails());
-        System.out.println(authentication.getName());
-
-//        actionComponent.findAllEmployeeActions(employeeId, principal.getName());
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

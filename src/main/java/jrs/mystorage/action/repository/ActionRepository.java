@@ -15,5 +15,7 @@ public interface ActionRepository extends JpaRepository<Action, UUID> {
 
     Page<Action> findAllByStorageIdAndStorageOwnerEmail(Pageable pageable, UUID storageId, String ownerEmail);
 
+    Page<Action> findAllByEmployeeIdAndStorageOwnerEmail(Pageable pageable, UUID employeeId, String ownerEmail);
+
     List<Action> findAllByEmployeeId(UUID employeeId);
 }

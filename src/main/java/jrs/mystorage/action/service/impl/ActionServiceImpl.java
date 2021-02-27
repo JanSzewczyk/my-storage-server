@@ -98,6 +98,11 @@ public class ActionServiceImpl implements ActionService {
     }
 
     @Override
+    public Page<Action> getAllEmployeeActions(String ownerEmail, UUID employeeId, Pageable pageable) {
+        return actionRepository.findAllByEmployeeIdAndStorageOwnerEmail(pageable, employeeId, ownerEmail);
+    }
+
+    @Override
     public void removeItemsFromStorage(String employeeEmail, ArrayList<RemoveActionItemDto> removedItems) {
 
         Employee employee = employeeRepository.findByEmail(employeeEmail)

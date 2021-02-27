@@ -12,6 +12,7 @@ import jrs.mystorage.util.exception.NotFoundException;
 import jrs.mystorage.util.mapper.EmployeeMapper;
 import jrs.mystorage.util.mapper.OwnerMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;

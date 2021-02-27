@@ -23,6 +23,7 @@ public class ItemMapper  extends Mapper<Item, ItemDto> {
                     m.map(s -> s.getProduct().getId(), ItemDto::setProductId);
                     m.map(s -> s.getProduct().getName(), ItemDto::setProductName);
                     m.map(s -> s.getProduct().getValue(), ItemDto::setProductValue);
+                    m.map(s -> s.getProduct().getDescription(), ItemDto::setProductDescription);
                     m.map(s -> s.getStorage().getOwner().getCurrency(), ItemDto::setCurrency);
                 });
 

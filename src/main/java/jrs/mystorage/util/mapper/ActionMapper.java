@@ -24,6 +24,9 @@ public class ActionMapper extends Mapper<Action, ActionDto> {
                     m.map(s -> s.getEmployee().getId(), ActionDto::setEmployeeId);
                     m.map(s -> s.getEmployee().getFirstName(), ActionDto::setEmployeeFirstName);
                     m.map(s -> s.getEmployee().getLastName(), ActionDto::setEmployeeLastName);
+                    m.map(s -> s.getStorage().getId(), ActionDto::setStorageId);
+                    m.map(s -> s.getStorage().getShortId(), ActionDto::setStorageShortId);
+                    m.map(s -> s.getStorage().getName(), ActionDto::setStorageName);
                     m.map(s -> s.getStorage().getOwner().getCurrency(), ActionDto::setCurrency);
                 });
     }
