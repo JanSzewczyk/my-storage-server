@@ -1,6 +1,5 @@
 package jrs.mystorage.employee.dto;
 
-import jrs.mystorage.storage.dto.StorageDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,6 +18,7 @@ import java.util.UUID;
 public class EmployeeViewDto extends RepresentationModel<EmployeeViewDto> {
 
     private UUID id;
+    private String shortId;
     private String email;
     private String firstName;
     private String lastName;

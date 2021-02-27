@@ -1,6 +1,5 @@
 package jrs.mystorage.util.mapper;
 
-import jrs.mystorage.action.dto.ActionStorageDto;
 import jrs.mystorage.item.dto.CItemDto;
 import jrs.mystorage.item.dto.ItemDto;
 import jrs.mystorage.item.model.Item;
@@ -24,24 +23,10 @@ public class ItemMapper  extends Mapper<Item, ItemDto> {
                     m.map(s -> s.getProduct().getId(), ItemDto::setProductId);
                     m.map(s -> s.getProduct().getName(), ItemDto::setProductName);
                     m.map(s -> s.getProduct().getValue(), ItemDto::setProductValue);
-                    m.map(s -> s.getAction().getStorage().getOwner().getCurrency(), ItemDto::setCurrency);
+                    m.map(s -> s.getProduct().getDescription(), ItemDto::setProductDescription);
+                    m.map(s -> s.getStorage().getOwner().getCurrency(), ItemDto::setCurrency);
                 });
 
-        mapper.createTypeMap(Item.class, ActionStorageDto.class)
-                .addMappings(m ->{
-                    m.map(s -> s.getAction().getId(), ActionStorageDto::setActionId);
-                    m.map(s -> s.getAction().getAction(), ActionStorageDto::setAction);
-                    m.map(s -> s.getAction().getCreatedAt(), ActionStorageDto::setCreatedAt);
-
-                    m.map(Item::getId, ActionStorageDto::setItemId);
-                    m.map(Item::getAmount, ActionStorageDto::setItemAmount);
-                    m.map(s -> s.getProduct().getName(), ActionStorageDto::setItemName);
-                    m.map(s -> s.getProduct().getValue(), ActionStorageDto::setItemValue);
-
-                    m.map(s -> s.getAction().getEmployee().getId(), ActionStorageDto::setEmployeeId);
-                    m.map(s -> s.getAction().getEmployee().getFirstName(), ActionStorageDto::setEmployeeFirstName);
-                    m.map(s -> s.getAction().getEmployee().getLastName(), ActionStorageDto::setEmployeeLastName);
-                });
     }
 
     @Override
@@ -60,9 +45,10 @@ public class ItemMapper  extends Mapper<Item, ItemDto> {
         return mappedItem;
     }
 
-    public ActionStorageDto toActionStorageDto(Item item) {
-        ActionStorageDto mappedAction = mapper.map(item, ActionStorageDto.class);
-        mappedAction.setItemTotalValue(item.getAmount() * item.getProduct().getValue());
-        return mappedAction;
+    public ItemDto toActionDto(Item item) {
+        ItemDto mappedItem = mapper.map(item, ItemDto.class);
+        mappedItem.setTotalValue(item.getAmount() * item.getProduct().getValue());
+        mappedItem.setCurrency(item.getAction().getStorage().getOwner().getCurrency());
+        return mappedItem;
     }
 }

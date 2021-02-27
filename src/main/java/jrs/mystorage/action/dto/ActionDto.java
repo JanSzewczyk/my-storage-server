@@ -30,6 +30,10 @@ public class ActionDto extends RepresentationModel<ActionDto> {
     private String employeeFirstName;
     private String employeeLastName;
 
+    private UUID storageId;
+    private String storageShortId;
+    private String storageName;
+
     private Currency currency;
 
     private List<ItemDto> items = new ArrayList<>();

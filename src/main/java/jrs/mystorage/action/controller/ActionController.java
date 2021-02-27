@@ -1,10 +1,9 @@
 package jrs.mystorage.action.controller;
 
+import jrs.mystorage.action.ActionComponent;
 import jrs.mystorage.action.dto.ActionDto;
-import jrs.mystorage.action.dto.ActionStorageDto;
 import jrs.mystorage.action.dto.RemoveActionItemDto;
 import jrs.mystorage.action.service.ActionService;
-import jrs.mystorage.employee.dto.EmployeeDto;
 import jrs.mystorage.item.dto.CItemDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -20,14 +19,16 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.UUID;
 
+
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("actions")
+@RequestMapping
 public class ActionController {
 
     private final ActionService actionService;
+    private final ActionComponent actionComponent;
 
-    @GetMapping("/storage/{storageId}")
+    @GetMapping("storage/{storageId}/actions")
     @PreAuthorize(value = "hasAuthority('OWNER')")
     public ResponseEntity<PagedModel<ActionDto>> getStorageActions(
             final Principal principal,
@@ -38,8 +39,19 @@ public class ActionController {
         return new ResponseEntity<>(allStorageActions, HttpStatus.OK);
     }
 
+    @GetMapping("employee/{employeeId}/actions")
+    @PreAuthorize(value = "hasAuthority('OWNER')")
+    public ResponseEntity<PagedModel<ActionDto>> getEmployeeActions(
+            final Principal principal,
+            Pageable pageable,
+            @PathVariable UUID employeeId
+    ) {
+        PagedModel<ActionDto> allEmployeeActions = actionComponent.findAllEmployeeActions(employeeId, principal.getName(), pageable);
+        return new ResponseEntity<>(allEmployeeActions, HttpStatus.OK);
+    }
+
     // TODO return action dto
-    @PostMapping("/store")
+    @PostMapping("actions/store")
     @PreAuthorize(value = "hasAuthority('EMPLOYEE')")
     public ResponseEntity<Void> storeItemsAction(
             final Principal principal,
@@ -50,7 +62,7 @@ public class ActionController {
     }
 
     // TODO return action dto
-    @PostMapping("/remove")
+    @PostMapping("actions/remove")
     @PreAuthorize(value = "hasAuthority('EMPLOYEE')")
     public ResponseEntity<Void> removeItemsAction(
             final Principal principal,

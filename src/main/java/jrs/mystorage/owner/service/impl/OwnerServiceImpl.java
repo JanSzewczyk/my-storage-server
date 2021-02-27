@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 
+import static jrs.mystorage.util.MessageTemplates.OWNER_NOT_FOUND_MESSAGE_TEMPLATE;
+
 
 @Service
 @RequiredArgsConstructor
@@ -32,5 +34,12 @@ public class OwnerServiceImpl implements OwnerService {
         ownerRepository.save(owner);
 
         return ownerMapper.toDto(owner);
+    }
+
+    @Override
+    public Owner findOwnerByEmail(String ownerEmail) {
+        return ownerRepository
+                .findByEmail(ownerEmail)
+                .orElseThrow(() -> new NotFoundException(String.format(OWNER_NOT_FOUND_MESSAGE_TEMPLATE, ownerEmail)));
     }
 }

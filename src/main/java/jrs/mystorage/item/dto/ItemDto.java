@@ -22,6 +22,7 @@ public class ItemDto extends RepresentationModel<ItemDto> {
 
     private UUID productId;
     private String productName;
+    private String productDescription;
     private Double productValue;
 
     private Double totalValue;

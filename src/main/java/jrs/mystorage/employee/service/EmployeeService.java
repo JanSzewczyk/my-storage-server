@@ -1,9 +1,9 @@
 package jrs.mystorage.employee.service;
 
-import jrs.mystorage.employee.dto.CEmployeeDto;
-import jrs.mystorage.employee.dto.EmployeeDto;
-import jrs.mystorage.employee.dto.EmployeeViewDto;
-import jrs.mystorage.employee.dto.UEmployeeDto;
+import jrs.mystorage.employee.dto.*;
+import jrs.mystorage.employee.model.Employee;
+import jrs.mystorage.employee.model.EmployeeView;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 
@@ -11,9 +11,9 @@ import java.util.UUID;
 
 public interface EmployeeService {
 
-    PagedModel<EmployeeViewDto> getEmployeesByOwnerEmail(String ownerEmail, Pageable pageable);
+    Page<EmployeeView> findAllEmployeesByOwnerId(UUID ownerId, Pageable pageable, String search);
 
-    PagedModel<EmployeeViewDto> getEmployeesByStorage(String ownerEmail, UUID storageId, Pageable pageable);
+    Page<EmployeeView> findAllEmployeesWorkingInStorage(UUID ownerId, UUID storageId, Pageable pageable);
 
     EmployeeDto getEmployees(String ownerEmail, UUID employeeId);
 
@@ -22,4 +22,6 @@ public interface EmployeeService {
     EmployeeDto updateEmployee(String ownerEmail, UUID employeeId, UEmployeeDto updatedEmployee);
 
     EmployeeDto removeEmployee(String ownerEmail, UUID employeeId);
+
+    EmployeeDto changeEmployeeStorage(String ownerEmail, UUID employeeId, AssignStorageDto assignStorage);
 }

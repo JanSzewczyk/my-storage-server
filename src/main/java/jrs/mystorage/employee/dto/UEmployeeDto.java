@@ -16,6 +16,7 @@ public class UEmployeeDto {
     @EmailValid
     private String email;
 
+    // TODO NULL VALID
     @PasswordOrEmptyValid
     private String password;
 

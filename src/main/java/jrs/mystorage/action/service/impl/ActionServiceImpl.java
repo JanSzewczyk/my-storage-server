@@ -1,7 +1,6 @@
 package jrs.mystorage.action.service.impl;
 
 import jrs.mystorage.action.dto.ActionDto;
-import jrs.mystorage.action.dto.ActionStorageDto;
 import jrs.mystorage.action.dto.RemoveActionItemDto;
 import jrs.mystorage.action.model.Action;
 import jrs.mystorage.action.model.ActionType;
@@ -99,6 +98,11 @@ public class ActionServiceImpl implements ActionService {
     }
 
     @Override
+    public Page<Action> getAllEmployeeActions(String ownerEmail, UUID employeeId, Pageable pageable) {
+        return actionRepository.findAllByEmployeeIdAndStorageOwnerEmail(pageable, employeeId, ownerEmail);
+    }
+
+    @Override
     public void removeItemsFromStorage(String employeeEmail, ArrayList<RemoveActionItemDto> removedItems) {
 
         Employee employee = employeeRepository.findByEmail(employeeEmail)
@@ -130,5 +134,10 @@ public class ActionServiceImpl implements ActionService {
         }).collect(Collectors.toList());
 
         itemRepository.saveAll(removeActionItems);
+    }
+
+    @Override
+    public List<Action> findAllActionsByEmployeeId(UUID employeeId) {
+        return actionRepository.findAllByEmployeeId(employeeId);
     }
 }
